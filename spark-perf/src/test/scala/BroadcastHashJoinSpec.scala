@@ -172,13 +172,13 @@ class BroadcastHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAl
     /**
       * (17) Determine Row Count (in rows) for `customersDS` and `ordersDS`
       *
-      * `customersDS`: ???
-      * `ordersDS`: ???
+      * `customersDS`: 8
+      * `ordersDS`: 8 * 100 = 800
       *
       * (18) Manually estimate Size for All Rows (in bytes)
       *
-      * `customersDS`: ???
-      * `ordersDS`: ???
+      * `customersDS`: 8 * 36 = 288
+      * `ordersDS`: 800 * 24 = 19 200
       */
 
     val broadcastCustomersDS = broadcast(customersDS)
@@ -199,11 +199,38 @@ class BroadcastHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAl
       *   buildLeft || buildRight
       * }
       * }}}
+      * Please note that the body of this method seems to be embedded (in a way) in method the following method (see [[https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/optimizer/joins.scala]] ) :
+      * {{{
+      * def getBroadcastBuildSide(
+            left: LogicalPlan,
+            right: LogicalPlan,
+            joinType: JoinType,
+            hint: JoinHint,
+            hintOnly: Boolean,
+            conf: SQLConf): Option[BuildSide] = {
+          val buildLeft = if (hintOnly) {
+            hintToBroadcastLeft(hint)
+          } else {
+            canBroadcastBySize(left, conf) && !hintToNotBroadcastLeft(hint)
+          }
+          val buildRight = if (hintOnly) {
+            hintToBroadcastRight(hint)
+          } else {
+            canBroadcastBySize(right, conf) && !hintToNotBroadcastRight(hint)
+          }
+          getBuildSide(
+            canBuildBroadcastLeft(joinType) && buildLeft,
+            canBuildBroadcastRight(joinType) && buildRight,
+            left,
+            right
+          )
+        }
+      * }}}
       *
       * With `plan` as `CustomerDS`
-      * ??? (true / false)
+      * YES (broadcast(customersDS) is being used)
       *
-      * ??? (YES / NO)
+      * YES (YES / NO)
       */
 
     /**
@@ -216,11 +243,24 @@ class BroadcastHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAl
       *   plan.stats.sizeInBytes >= 0 && plan.stats.sizeInBytes <= conf.autoBroadcastJoinThreshold
       * }
       * }}}
+      * 
+      * Please note that the method is slighly different nowadays : [[https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/optimizer/joins.scala]]
+      * {{{
+      *   def canBroadcastBySize(plan: LogicalPlan, conf: SQLConf): Boolean = {
+            val autoBroadcastJoinThreshold = if (plan.stats.isRuntime) {
+              conf.getConf(SQLConf.ADAPTIVE_AUTO_BROADCASTJOIN_THRESHOLD)
+                .getOrElse(conf.autoBroadcastJoinThreshold)
+            } else {
+              conf.autoBroadcastJoinThreshold
+            }
+            plan.stats.sizeInBytes >= 0 && plan.stats.sizeInBytes <= autoBroadcastJoinThreshold
+          }
+      * }}}
       *
       * With `plan` as `CustomerDS`
-      * ??? (true / false)
+      * yes (CustomerDS = 8 * 36 = 288 and OrderDS = 800 * 24 = 19 200)
       *
-      * ??? (YES / NO)
+      * NO (288 >= 0 && 288 <= 200 then true && false then false)
       */
 
     customersAndOrdersDF.collect()

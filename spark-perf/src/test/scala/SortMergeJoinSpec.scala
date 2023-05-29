@@ -57,7 +57,9 @@ class SortMergeJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       *
       * See how '''Broadcast Hash Join''' and then '''Shuffled Hash Join''' are tested for applicability
       * before attempting with '''Sort Merge Join'''
-      *
+      * hint ? => i) BHJ, ii) SMJ, iii) SHJ
+      * not hint ? => joins order i) BHJ, ii) SHJ, iii) SMJ and iv) cartesian [[https://github.com/apache/spark/blob/master/sql/core/src/main/scala/org/apache/spark/sql/execution/SparkStrategies.scala]] createjoinWithoutHint()
+      * 
       * (8) Look at `spark.sql.join.preferSortMergeJoin` config
       *     [[org.apache.spark.sql.internal.SQLConf.PREFER_SORTMERGEJOIN]]
       *     [[org.apache.spark.sql.internal.SQLConf.preferSortMergeJoin]]
@@ -65,6 +67,14 @@ class SortMergeJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       * When true, prefer sort merge join over shuffle hash join.
       *
       * See how to disable '''Shuffled Hash Join''' (unless '''Sort Merge Join''' is not applicable)
+      * => spark.sql.join.preferSortMergeJoin to true or org.apache.spark.sql.catalyst.optimizer.joins.muchSmaller(a, b, conf) yields "false"
+      * Plus, "left" table must NOT be "much smaller" (see below for definition details)
+      * please note muchSmaller(a, b, conf) has different signature and body nowadays, previously it was 
+      * muchSmaller(a: LogicalPlan, b: LogicalPlan): Boolean = a.stats.sizeInBytes * 3 <= b.stats.sizeInBytes
+      * now it's 
+      *   private def muchSmaller(a: LogicalPlan, b: LogicalPlan, conf: SQLConf): Boolean = {
+      *     a.stats.sizeInBytes * conf.getConf(SQLConf.SHUFFLE_HASH_JOIN_FACTOR) <= b.stats.sizeInBytes
+      *   }
       *
       * (9) Look at `spark.sql.autoBroadcastJoinThreshold` config
       *     [[org.apache.spark.sql.internal.SQLConf.AUTO_BROADCASTJOIN_THRESHOLD]]
@@ -73,7 +83,7 @@ class SortMergeJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       * Configures the maximum size in bytes for a table that will be broadcast to all worker
       * nodes when performing a join. By setting this value to -1 broadcasting can be disabled.
       *
-      * See how to disable '''Broadcast Hash Join''' (by sizes)
+      * See how to disable '''Broadcast Hash Join''' (by sizes) => -1 value
       */
 
     implicit val spark: SparkSession = sparkSession

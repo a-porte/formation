@@ -95,6 +95,7 @@ class ShuffledHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll
       *   a.stats.sizeInBytes * 3 <= b.stats.sizeInBytes
       * }
       * }}}
+      * Please note that the definition and signature of this method changed nowadays : [[https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/optimizer/joins.scala]]
       *
       * (11) Look at `spark.sql.join.preferSortMergeJoin` config
       *      [[org.apache.spark.sql.internal.SQLConf.PREFER_SORTMERGEJOIN]]
@@ -134,7 +135,7 @@ class ShuffledHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll
       * !conf.preferSortMergeJoin
       * }}}
       *
-      * ??? (true / false)
+      * TRUE (!conf.preferSortMergeJoin = !false)
       *
       * {{{
       * def canBuildLocalHashMap(plan: LogicalPlan): Boolean = {
@@ -143,7 +144,7 @@ class ShuffledHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll
       * }}}
       *
       * With `plan` as `customersDS`
-      * ??? (true / false)
+      * yields TRUE (36 * 4 <= 2 * 100  ==  144 <= 200 == true)
       *
       * {{{
       * def muchSmaller(a: LogicalPlan, b: LogicalPlan): Boolean = {
@@ -152,9 +153,9 @@ class ShuffledHashJoinSpec extends FlatSpec with Matchers with BeforeAndAfterAll
       * }}}
       *
       * With `a` as `customerDS`, `b` as `ordersDS`
-      * ??? (true / false)
+      * TRUE (144 * 3 <= 400 *24 ==  432 <=  9600)
       *
-      * ??? (YES / NO)
+      * *TRUE* (true && true && true)
       */
 
     customersAndOrdersDF.collect()
