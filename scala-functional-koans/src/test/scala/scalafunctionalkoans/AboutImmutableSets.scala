@@ -8,11 +8,11 @@ class AboutImmutableSets extends KoanSuite {
   koan("Set behaves like a function returning a boolean") {
     val ids = Set(1, 2, 3)
 
-    ids(1) should be (true)
-    ids(2) should be (true)
-    ids(3) should be (true)
+    ids(1) should be (__)
+    ids(2) should be (__)
+    ids(3) should be (__)
 
-    ids(100) should be (false)
+    ids(100) should be (__)
   }
 
   koan("Two sets can be compared for equality ignoring order (as expected for sets)") {
@@ -20,16 +20,16 @@ class AboutImmutableSets extends KoanSuite {
     val s2 = Set(10, 20, 30)
     val s3 = Set(3, 2, 1)
 
-    (s1 == s2) should be (false)
-    (s1 == s3) should be (true)
-    (s1 eq s3) should be (false)
+    (s1 == s2) should be (__)
+    (s1 == s3) should be (__)
+    (s1 eq s3) should be (__)
   }
 
   koan("It can be tested whether or not a set contains an element") {
     val s = Set(1, 2, 3)
 
-    s.contains(2) should be (true)
-    s.contains(100) should be (false)
+    s.contains(2) should be (__)
+    s.contains(100) should be (__)
   }
 
   koan("An element can be added to a set and return a new set") {
@@ -37,8 +37,8 @@ class AboutImmutableSets extends KoanSuite {
 
     val newIds = ids + 4
 
-    ids should be (Set(1,2,3))
-    newIds should be (Set(1,2,3, 4))
+    ids should be (__)
+    newIds should be (__)
   }
 
   koan("Elements can be added to a set and return a new set") {
@@ -46,8 +46,8 @@ class AboutImmutableSets extends KoanSuite {
 
     val newNames = names ++ Seq("Paul", "Luke")
 
-    names should be (Set("Peter", "Mary", "John"))
-    newNames should be (Set("Peter", "Mary", "John", "Luke", "Paul"))
+    names should be (__)
+    newNames should be (__)
   }
 
   koan("An element can be removed from a set and return a new set") {
@@ -55,8 +55,8 @@ class AboutImmutableSets extends KoanSuite {
 
     val newIds = ids - 3
 
-    ids should be (Set(1,2, 3))
-    newIds should be (Set(1,2))
+    ids should be (__)
+    newIds should be (__)
   }
 
   koan("Elements can be removed from a set and return a new set") {
@@ -64,8 +64,8 @@ class AboutImmutableSets extends KoanSuite {
 
     val newNames = names -- Seq("John", "Mary")
 
-    names should be (Set("Peter", "Mary", "John"))
-    newNames should be (Set("Peter"))
+    names should be (__)
+    newNames should be (__)
   }
 
   koan("Union of two sets will create a new set") {
@@ -74,7 +74,7 @@ class AboutImmutableSets extends KoanSuite {
 
     val names = englishNames union frenchNames // calling union method without '.', '(' and ')'
 
-    names should be (Set("Paul", "Jean", "Marie", "John", "Mary", "Peter"))
+    names should be (__)
   }
 
   koan("Intersection of two sets will create a new set") {
@@ -83,7 +83,7 @@ class AboutImmutableSets extends KoanSuite {
 
     val retainedIds = before intersect after
 
-    retainedIds should be (Set(4, 2))
+    retainedIds should be (__)
   }
 
   koan("Difference of two sets will create a new set") {
@@ -93,8 +93,8 @@ class AboutImmutableSets extends KoanSuite {
     val deletedIds = before diff after
     val newIds = after diff before
 
-    deletedIds should be (Set(1, 3, 5))
-    newIds should be (Set( 8))
+    deletedIds should be (__)
+    newIds should be (__)
   }
 
   koan("Sets can be filtered") {
@@ -104,8 +104,8 @@ class AboutImmutableSets extends KoanSuite {
     val filteredIds = ids.filter(_ < 3)
     val filteredNames = names.filter(_.startsWith("M"))
 
-    filteredIds should be (Set(1, 2))
-    filteredNames should be (Set("Mary"))
+    filteredIds should be (__)
+    filteredNames should be (__)
   }
 
   koan("Elements of set can be transformed (mapped)") {
@@ -115,8 +115,8 @@ class AboutImmutableSets extends KoanSuite {
     val idStrings = ids.map(_.toString)
     val nameSizes = names.map(_.length)
 
-    idStrings should be (Set("1", "2", "3"))
-    nameSizes should be (Set(5, 4))
+    idStrings should be (__)
+    nameSizes should be (__)
   }
 
   koan("Items of set can be individually transformed to set that are then merged") {
@@ -126,8 +126,8 @@ class AboutImmutableSets extends KoanSuite {
     val extendedIds = ids.flatMap(id => Set(id + 10, id + 20))
     val fullNames = firstNames.flatMap(firstName => Set(s"$firstName Jones", s"$firstName Simpson"))
 
-    extendedIds should be (Set(11, 21, 22, 12, 13, 23))
-    fullNames should be (Set("Peter Jones", "John Jones", "Mary Jones", "Peter Simpson", "John Simpson", "Mary Simpson"))
+    extendedIds should be (__)
+    fullNames should be (__)
   }
 
   koan("Sets can be used in a `for` comprehension") {
@@ -141,6 +141,6 @@ class AboutImmutableSets extends KoanSuite {
       if lastName.startsWith("J") // second filter
     } yield s"$firstName $lastName"
 
-    fullNames should be (Set("Peter Jones", "Peter Jackson", "Paul Jones", "Paul Jackson"))
+    fullNames should be (__)
   }
 }

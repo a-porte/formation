@@ -40,10 +40,10 @@ class AboutHigherOrderFunctions extends KoanSuite {
     val incDesugarredValue = incDesugarred(1)
     val addDesugarredValue = addDesugarred(5, 4)
 
-    incValue should be (2)
-    addValue should be (9)
-    incDesugarredValue should be (2)
-    addDesugarredValue should be (9)
+    incValue should be (__)
+    addValue should be (__)
+    incDesugarredValue should be (__)
+    addDesugarredValue should be (__)
   }
 
   koan("When assigning a lambda expression to a `val`, type can be inferred as usual in Scala") {
@@ -53,8 +53,8 @@ class AboutHigherOrderFunctions extends KoanSuite {
     val incValue = inc(1)
     val addValue = add(5, 4)
 
-    incValue should be (2)
-    addValue should be (9)
+    incValue should be (__)
+    addValue should be (__)
   }
 
   koan("A lambda expression can be returned by a method without parameters") {
@@ -72,8 +72,8 @@ class AboutHigherOrderFunctions extends KoanSuite {
     val incValue = inc()(1) // `()` REQUIRED to call `inc`, then we chain call on lambda. Quite ugly!
     val addValue = add(5, 4) // `()` NOT REQUIRED to call `add`, then we chain call on lambda. Pretty!
 
-    incValue should be (2)
-    addValue should be (9)
+    incValue should be (__)
+    addValue should be (__)
   }
 
   koan("A lambda expression can be returned by a method with parameters") {
@@ -85,8 +85,8 @@ class AboutHigherOrderFunctions extends KoanSuite {
 
     val addValue = add(5)(4) // We call `add` passing 5, then chain call on returned lambda passing 4.
 
-    addFiveValue should be (9)
-    addValue should be (9)
+    addFiveValue should be (__)
+    addValue should be (__)
   }
 
   koan("A lambda expression can be passed as a method parameter") {
@@ -99,8 +99,8 @@ class AboutHigherOrderFunctions extends KoanSuite {
     val value2 = applyTwice(5, n => n * 2) // passing lambda expression directly (type of `n` is inferred)
     val value3 = applyTwice(5, _ * 2) // shortcut syntax
 
-    value1 should be (20)
-    value2 should be (20)
-    value3 should be (20)
+    value1 should be (__)
+    value2 should be (__)
+    value3 should be (__)
   }
 }

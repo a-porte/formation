@@ -25,9 +25,9 @@ class AboutPartialFunctions extends KoanSuite {
       def apply(n: Int): Double = 1.0 / n
     }
 
-    inverse.isDefinedAt(0) should be (false)
-    inverse.isDefinedAt(2) should be (true)
-    inverse(2) should be (.5)
+    inverse.isDefinedAt(0) should be (__)
+    inverse.isDefinedAt(2) should be (__)
+    inverse(2) should be (__)
   }
 
   koan(
@@ -43,14 +43,14 @@ class AboutPartialFunctions extends KoanSuite {
       case 3 => "Three"
     }
 
-    label.isDefinedAt(1) should be (true)
-    label.isDefinedAt(2) should be (true)
-    label.isDefinedAt(3) should be (true)
-    label.isDefinedAt(100) should be (false)
+    label.isDefinedAt(1) should be (__)
+    label.isDefinedAt(2) should be (__)
+    label.isDefinedAt(3) should be (__)
+    label.isDefinedAt(100) should be (__)
 
-    label(1) should be ("One")
-    label(2) should be ("Two")
-    label(3) should be ("Three")
+    label(1) should be (__)
+    label(2) should be (__)
+    label(3) should be (__)
   }
 
   koan(
@@ -64,12 +64,12 @@ class AboutPartialFunctions extends KoanSuite {
       case Dog("Volt", age) if age > 0 && age <= 5 => "Young dog called Volt"
     }
 
-    label.isDefinedAt(Dog("Rex", 10)) should be (true)
-    label.isDefinedAt(Dog("Rex", 13)) should be (false)
-    label.isDefinedAt(Dog("Volt", 3)) should be (true)
-    label.isDefinedAt(Dog("Volt", 10)) should be (false)
+    label.isDefinedAt(Dog("Rex", 10)) should be (__)
+    label.isDefinedAt(Dog("Rex", 13)) should be (__)
+    label.isDefinedAt(Dog("Volt", 3)) should be (__)
+    label.isDefinedAt(Dog("Volt", 10)) should be (__)
 
-    label(Dog("Rex", 10)) should be ("My good old Rex")
-    label(Dog("Volt", 3)) should be ("Young dog called Volt")
+    label(Dog("Rex", 10)) should be (__)
+    label(Dog("Volt", 3)) should be (__)
   }
 }

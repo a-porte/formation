@@ -33,7 +33,7 @@ class AboutInstructions extends KoanSuite {
       weather = "Cold"
     }
 
-    weather should be ("Warm")
+    weather should be (__)
   }
 
   koan("match can be an instruction") {
@@ -56,7 +56,7 @@ class AboutInstructions extends KoanSuite {
         grade = "Good"
     }
 
-    grade should be ("Good")
+    grade should be (__)
   }
 
   koan("try catch can be an instruction") {
@@ -88,8 +88,8 @@ class AboutInstructions extends KoanSuite {
         failure = "Nooo!"
     }
 
-    success should be ("Wow!")
-    failure should be ("Nooo!")
+    success should be (__)
+    failure should be (__)
   }
 
   koan("`for` can be an instruction yielding nothing") {
@@ -105,7 +105,7 @@ class AboutInstructions extends KoanSuite {
       greetings += "Hello " + name + "!"
     }
 
-    greetings should be (Seq("Hello Paul!", "Hello Peter!", "Hello Mary!"))
+    greetings should be (Seq(__, __, __))
   }
 
   koan("return is an instruction, it's some kind of goto") {
@@ -119,7 +119,7 @@ class AboutInstructions extends KoanSuite {
       return a
     }
 
-    max(5, 6) should be (6)
+    max(5, 6) should be (__)
   }
 
   koan("Instructions in fact evaluate to a secret value `()` of type `Unit`") {
@@ -132,7 +132,7 @@ class AboutInstructions extends KoanSuite {
       a = 10 // Assignment instruction, not an expression
     }
 
-    blockValue.isInstanceOf[Unit] should be (true)
-    blockValue should be (unit)
+   // blockValue.isInstanceOf[Unit] should be (__)
+    blockValue should be (__)
   }
 }

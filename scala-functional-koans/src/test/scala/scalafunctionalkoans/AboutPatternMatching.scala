@@ -24,7 +24,7 @@ class AboutPatternMatching extends KoanSuite {
       case _ => "Other" // `case _` will match any other case such as `default`in Java.
     }
 
-    numberText should be ("Two")
+    numberText should be (__)
   }
 
   koan("Pattern matching can match simple values and return complex values such as tuples") {
@@ -37,7 +37,7 @@ class AboutPatternMatching extends KoanSuite {
       case _ => ("Other", "Autre")
     }
 
-    numberTuple should be (("Two", "Deux"))
+    numberTuple should be ((__, __))
   }
 
   koan("Pattern matching can match more complex values such as tuples") {
@@ -49,8 +49,8 @@ class AboutPatternMatching extends KoanSuite {
       case _ => "Other"
     }
 
-    label(("cat", 2)) should be ("Two cats")
-    label(("dog", 10)) should be ("Other")
+    label(("cat", 2)) should be (__)
+    label(("dog", 10)) should be (__)
   }
 
   koan("Patter matching can use `_` as a wildcard to accept any value") {
@@ -62,19 +62,19 @@ class AboutPatternMatching extends KoanSuite {
       case _ => "Other"
     }
 
-    label(("cat", 20)) should be ("Any number of cats")
+    label(("cat", 20)) should be (__)
   }
 
   koan("Pattern matching can extract a matching part and assign it to a `val`") {
 
     def label(animalAndQuantity: (String, Int)) = animalAndQuantity match {
       case ("dog", 1) => "One dog"
-      case ("cat", quantity) => quantity + " cats" // `quantity` is a `val` that will be assigned the second entry of matching tuple.
+      case ("cat", quantity) =>  s"$quantity cats" // `quantity` is a `val` that will be assigned the second entry of matching tuple.
       case ("fish", 3) => "Three fishes"
       case _ => "Other"
     }
 
-    label(("cat", 20)) should be ("20 cats")
+    label(("cat", 20)) should be (__)
   }
 
   koan("Pattern matching `case` can be restricted with an `if` condition") {
@@ -83,16 +83,16 @@ class AboutPatternMatching extends KoanSuite {
       case ("dog", 1) => "One dog"
 
       case ("cat", 1) => "One cat exactly"
-      case ("cat", quantity) if (quantity < 10) => quantity + " cats"
+      case ("cat", quantity) if (quantity < 10) => s"$quantity cats"
       case ("cat", _) => "Too many cats"
 
       case ("fish", 3) => "Three fishes"
       case _ => "Other"
     }
 
-    label(("cat", 1)) should be ("One cat exactly")
-    label(("cat", 5)) should be ("5 cats")
-    label(("cat", 20)) should be ("Too many cats")
+    label(("cat", 1)) should be (__)
+    label(("cat", 5)) should be (__)
+    label(("cat", 20)) should be (__)
   }
 
   koan("Pattern matching works with case classes") {
@@ -107,10 +107,10 @@ class AboutPatternMatching extends KoanSuite {
       case Dog(_, age) if age > 10 => "An old dog"
     }
 
-    label(Dog("Rex", 5)) should be ("Good dog")
-    label(Dog("Volt", 0)) should be ("Just born dog")
-    label(Dog("Volt", 2)) should be ("Young dog called Volt")
-    label(Dog("Volt", 14)) should be ("An old dog")
+    label(Dog("Rex", 5)) should be (__)
+    label(Dog("Volt", 0)) should be (__)
+    label(Dog("Volt", 2)) should be (__)
+    label(Dog("Volt", 14)) should be (__)
   }
 
   koan("Pattern matching can match case class hierarchy") {
@@ -131,8 +131,8 @@ class AboutPatternMatching extends KoanSuite {
     val expr1 = Add(Const(5), Const(6))
     val expr2 = Multiply(Add(Const(1), Const(2)), Const(4))
 
-    compute(expr1) should be (11)
-    compute(expr2) should be (12)
+    compute(expr1) should be (__)
+    compute(expr2) should be (__)
   }
 
   koan("Pattern matching can be used for assignments") {
@@ -141,8 +141,8 @@ class AboutPatternMatching extends KoanSuite {
     val (x1, y1) = (1, 2)
     val Point(x2, _) = Point(10, 20)
 
-    x1 should be (1)
-    y1 should be (2)
-    x2 should be (10)
+    x1 should be (__)
+    y1 should be (__)
+    x2 should be (__)
   }
 }

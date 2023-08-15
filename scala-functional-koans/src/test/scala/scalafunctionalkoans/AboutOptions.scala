@@ -25,16 +25,16 @@ class AboutOptions extends KoanSuite {
     val none: Option[String] = None
     val something: Option[String] = Some("value")
 
-    none.isEmpty should be (true)
-    something.isEmpty should be (false)
+    none.isEmpty should be (__)
+    something.isEmpty should be (__)
   }
 
   koan("It is also possible to use type inference with options") {
     val none = Option.empty[String] // Calling generic `empty` method on `Option` object
     val something = Some("value")
 
-    none.isEmpty should be (true)
-    something.isEmpty should be (false)
+    none.isEmpty should be (__)
+    something.isEmpty should be (__)
   }
 
   koan("Present value can be obtained from option (or not)") {
@@ -45,18 +45,18 @@ class AboutOptions extends KoanSuite {
       none.get
     }
 
-    something.get should be ("value")
+    something.get should be (__)
   }
 
   koan("Option can be filtered exactly like a single item collection") {
-    Option.empty[Int].filter(_ > 0) should be (None)
-    Some(-5).filter(_ > 0) should be (None)
-    Some(5).filter(_ > 0) should be (Some(5))
+    Option.empty[Int].filter(_ > 0) should be (__)
+    Some(-5).filter(_ > 0) should be (__)
+    Some(5).filter(_ > 0) should be (__)
   }
 
   koan("Option can be mapped over like a single item collection") {
-    Option.empty[Int].map(_ + 1) should be (None)
-    Some(5).map(_ + 1) should be (Some(6))
+    Option.empty[Int].map(_ + 1) should be (__)
+    Some(5).map(_ + 1) should be (__)
   }
 
   koan("Option can help traverse a property from an optional reference") {
@@ -65,8 +65,8 @@ class AboutOptions extends KoanSuite {
     val noCustomer = Option.empty[Customer]
     val customerWithEmail = Some(Customer(email = "pierre.dupond@valtech.fr"))
 
-    noCustomer.map(_.email) should be (None)
-    customerWithEmail.map(_.email) should be (Some("pierre.dupond@valtech.fr"))
+    noCustomer.map(_.email) should be (__)
+    customerWithEmail.map(_.email) should be (__)
   }
 
   koan("Option can help traverse an optional property from an optional reference") {
@@ -76,14 +76,14 @@ class AboutOptions extends KoanSuite {
     val customerWithoutEmail = Some(Customer(email = None))
     val customerWithEmail = Some(Customer(email = Some("pierre.dupond@valtech.fr")))
 
-    noCustomer.flatMap(_.email) should be (None)
-    customerWithoutEmail.flatMap(_.email) should be (None)
-    customerWithEmail.flatMap(_.email) should be (Some("pierre.dupond@valtech.fr"))
+    noCustomer.flatMap(_.email) should be (__)
+    customerWithoutEmail.flatMap(_.email) should be (__)
+    customerWithEmail.flatMap(_.email) should be (__)
   }
 
   koan("None can be replaced by a default value") {
-    Option.empty[Int].getOrElse(0) should be (0)
-    Some(5).getOrElse(0) should be (5)
+    Option.empty[Int].getOrElse(0) should be (__)
+    Some(5).getOrElse(0) should be (__)
   }
 
   koan("Options can be used in a `for` comprehension") {
@@ -94,9 +94,9 @@ class AboutOptions extends KoanSuite {
       } yield s"${_firstName} ${_lastName}"
     }
 
-    fullName(None, None) should be (None)
-    fullName(None, Some("Dupond")) should be (None)
-    fullName(Some("Pierre"), None) should be (None)
-    fullName(Some("Pierre"), Some("Dupond")) should be (Some("Pierre Dupond"))
+    fullName(None, None) should be (__)
+    fullName(None, Some("Dupond")) should be (__)
+    fullName(Some("Pierre"), None) should be (__)
+    fullName(Some("Pierre"), Some("Dupond")) should be (__)
   }
 }

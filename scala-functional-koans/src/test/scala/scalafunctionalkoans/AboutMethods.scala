@@ -18,7 +18,7 @@ class AboutMethods extends KoanSuite {
       x + y
     }
 
-    add(6, 7) should be (13)
+    add(6, 7) should be (__)
   }
 
   /* For public methods, this is a best practice to explicitly mention return type. */
@@ -31,7 +31,7 @@ class AboutMethods extends KoanSuite {
       x + y
     }
 
-    add(2, 10) should be (12)
+    add(2, 10) should be (__)
   }
 
 
@@ -39,8 +39,8 @@ class AboutMethods extends KoanSuite {
     // Here we do not use curly brackets because expression fits on one line, but we could.
     def min(x: Int, y: Int): Int = if (x < y) x else y
 
-    min(5, 10) should be (5)
-    min(8, 4) should be (4)
+    min(5, 10) should be (__)
+    min(8, 4) should be (__)
   }
 
   koan(
@@ -48,7 +48,7 @@ class AboutMethods extends KoanSuite {
       | This is analogous to `void` in Java.""") {
 
     def check(x: Int): Unit = {
-      (x * 2) should be (6) // Last line evaluates to `()` of type `Unit`.
+      (x * 2) should be (__) // Last line evaluates to `()` of type `Unit`.
     }
 
     check(3)
@@ -57,13 +57,13 @@ class AboutMethods extends KoanSuite {
   koan("A method can be declared to take no parameter and to be called WITHOUT `()`") {
     def number = 42
 
-    number should be (42)
+    number should be (__)
   }
 
   koan("A method can be declared to take no parameter and to be called WITH `()`") {
     def number() = 42
 
-    number() should be (42)
+    number() should be (__)
   }
 
   koan("When performing recursion, the return type on the method is mandatory!") {
@@ -75,7 +75,7 @@ class AboutMethods extends KoanSuite {
         n * factorial(n - 1)
     }
 
-    factorial(4) should be (24)
+    factorial(4) should be (__)
 
     //Note: Fire up a REPL and paste factorial(100000)!
   }
@@ -102,7 +102,7 @@ class AboutMethods extends KoanSuite {
     def factorial(n: BigInt): BigInt = fact(n, 1)
 
 
-    factorial(4) should be (24)
+    factorial(4) should be (__)
 
     //Note: Fire up a REPL and try factorial(100000) now!
   }
@@ -125,6 +125,6 @@ class AboutMethods extends KoanSuite {
       fact(i, 1)
     }
 
-    factorial(5) should be (120)
+    factorial(5) should be (__)
   }
 }

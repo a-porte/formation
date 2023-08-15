@@ -8,9 +8,9 @@ class AboutImmutableIndexedSequences extends KoanSuite {
   koan("Indexed sequence behaves like a function returning value at position") {
     val ids = IndexedSeq(1, 2, 3)
 
-    ids(0) should be (1)
-    ids(1) should be (2)
-    ids(2) should be (3)
+    ids(0) should be (__)
+    ids(1) should be (__)
+    ids(2) should be (__)
 
     intercept[IndexOutOfBoundsException] {
       ids(100)
@@ -20,11 +20,11 @@ class AboutImmutableIndexedSequences extends KoanSuite {
   koan("Indexed sequence behaves like a partial function") {
     val ids = IndexedSeq(1, 2, 3)
 
-    ids.isDefinedAt(0) should be (true)
-    ids.isDefinedAt(1) should be (true)
-    ids.isDefinedAt(2) should be (true)
+    ids.isDefinedAt(0) should be (__)
+    ids.isDefinedAt(1) should be (__)
+    ids.isDefinedAt(2) should be (__)
 
-    ids.isDefinedAt(100) should be (false)
+    ids.isDefinedAt(100) should be (__)
   }
 
   koan("Two indexed sequences can be compared for equality") {
@@ -32,16 +32,16 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     val s2 = IndexedSeq(1, 2, 3)
     val s3 = IndexedSeq(3, 2, 1)
 
-    (s1 == s2) should be (true)
-    (s1 == s3) should be (false)
-    (s1 eq s2) should be (false)
+    (s1 == s2) should be (__)
+    (s1 == s3) should be (__)
+    (s1 eq s2) should be (__)
   }
 
   koan("It can be tested whether or not a indexed sequence contains an element") {
     val s = IndexedSeq(1, 2, 3)
 
-    s.contains(2) should be (true)
-    s.contains(100) should be (false)
+    s.contains(2) should be (__)
+    s.contains(100) should be (__)
   }
 
   koan(
@@ -61,8 +61,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     But with this syntax, order of operands is reversed.
     */
 
-    newIds should be (IndexedSeq(0, 1, 2, 3))
-    ids should be (IndexedSeq(1, 2, 3))
+    newIds should be (__)
+    ids should be (__)
   }
 
   koan(
@@ -82,8 +82,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     But with this syntax, this would be inconsistent with prepend operator.
     */
 
-    newIds should be (IndexedSeq(1, 2, 3, 4))
-    ids should be (IndexedSeq(1, 2, 3))
+    newIds should be (__)
+    ids should be (__)
   }
 
   koan(
@@ -96,9 +96,9 @@ class AboutImmutableIndexedSequences extends KoanSuite {
 
     val s3 = s1 ++ s2
 
-    s3 should be (IndexedSeq(1, 2, 3, 10, 20, 30))
-    s1 should be (IndexedSeq(1, 2, 3))
-    s2 should be (IndexedSeq(10, 20, 30))
+    s3 should be (__)
+    s1 should be (__)
+    s2 should be (__)
   }
 
   koan(
@@ -110,8 +110,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
 
     val filteredIds = ids.filter(_ > 2)
 
-    filteredIds should be (IndexedSeq(3, 4))
-    ids should be (IndexedSeq(1, 2, 3, 4))
+    filteredIds should be (__)
+    ids should be (__)
   }
 
   koan(
@@ -124,8 +124,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
 
     val greetings = names.map(name => s"Hello $name!")
 
-    greetings should be (IndexedSeq("Hello Peter!", "Hello John!", "Hello Mary!"))
-    names should be (IndexedSeq("Peter", "John", "Mary"))
+    greetings should be (__)
+    names should be (__)
   }
 
   koan(
@@ -140,13 +140,13 @@ class AboutImmutableIndexedSequences extends KoanSuite {
 
     multipliedNumbers should be (
       IndexedSeq(
-        IndexedSeq(10, 100),
-        IndexedSeq(20, 200),
-        IndexedSeq(30, 300)
+        IndexedSeq(__, __),
+        IndexedSeq(__, __),
+        IndexedSeq(__, __)
       )
     )
 
-    numbers should be (IndexedSeq(1, 2, 3))
+    numbers should be (__)
   }
 
   koan(
@@ -158,8 +158,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     val numbers = IndexedSeq(1, 2, 3)
     val multipliedNumbers = numbers.flatMap(n => IndexedSeq(n * 10, n * 100))
 
-    multipliedNumbers should be (IndexedSeq(10, 100, 20, 200, 30, 300))
-    numbers should be (IndexedSeq(1, 2, 3)) // You got it now!
+    multipliedNumbers should be (IndexedSeq(__, __, __, __, __, __))
+    numbers should be (__) // You got it now!
   }
 
   koan(
@@ -176,8 +176,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     // Alternatively a more compact syntax
     val multipliedNumbers2 = for (n <- numbers) yield n * 10
 
-    multipliedNumbers1 should be (IndexedSeq(10, 20, 30, 40))
-    multipliedNumbers2 should be (IndexedSeq(10, 20, 30, 40))
+    multipliedNumbers1 should be (__)
+    multipliedNumbers2 should be (__)
 
     /*
     Awareness awakener
@@ -201,8 +201,8 @@ class AboutImmutableIndexedSequences extends KoanSuite {
     // Alternatively a more compact syntax
     val filteredNumbers2 = for (n <- numbers if n % 2 == 0) yield n
 
-    filteredNumbers1 should be (IndexedSeq(2, 4))
-    filteredNumbers2 should be (IndexedSeq(2, 4))
+    filteredNumbers1 should be (__)
+    filteredNumbers2 should be (__)
 
     /*
     Awareness awakener
@@ -225,7 +225,7 @@ class AboutImmutableIndexedSequences extends KoanSuite {
 
     // Alternative short syntax is not recommended here
 
-    addedNumbers should be (IndexedSeq(11, 21, 12, 22, 13, 23))
+    addedNumbers should be (__)
 
     /*
     Awareness awakener
@@ -248,7 +248,7 @@ class AboutImmutableIndexedSequences extends KoanSuite {
       if n2 < 30 // second filter
     } yield n1 + n2
 
-    addedNumbers should be (IndexedSeq(12, 22, 14, 24))
+    addedNumbers should be (__)
 
     /*
     Awareness awakener

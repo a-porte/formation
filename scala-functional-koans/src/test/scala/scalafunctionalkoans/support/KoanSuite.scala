@@ -3,9 +3,45 @@ package scalafunctionalkoans.support
 import org.scalatest._
 import org.scalatest.events.{Event, TestFailed, TestPending, TestSucceeded}
 
-import scala.language.reflectiveCalls
+import scala.reflect.Selectable.reflectiveSelectable
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-trait KoanSuite extends FunSuite with CancelAfterFailure with Matchers {
+trait KoanSuite extends AnyFunSuite with CancelAfterFailure with Matchers {
+  class KoanReporter(wrappedReporter: Reporter) extends Reporter {
+    var succeeded = false
+
+    type HasTextAndName = {
+      val testText: String
+      val suiteName: String
+    }
+
+    def stopTests(e: HasTextAndName): Unit = {
+      note("")
+      note("*****************************************")
+      note("")
+      note(s"Student should meditate on the koan:")
+      note("")
+      note(s"~~ ${e.testText} ~~")
+      note("")
+      note(s"in the suite ${e.suiteName}.scala")
+      note("")
+      note("*****************************************")
+      note("")
+      Stopper.default.requestStop()
+    }
+
+    override def apply(event: Event): Unit = {
+      event match {
+        case _: TestSucceeded => succeeded = true
+        case e: TestFailed => stopTests(e.asInstanceOf[HasTextAndName])
+        case e: TestPending => stopTests(e.asInstanceOf[HasTextAndName])
+        case _ =>
+      }
+
+      wrappedReporter(event)
+    }
+  }
   override def runTests(testName: Option[String], args: Args): Status = {
     if (testName == null) throw new NullPointerException("testName was null")
     if (args.reporter == null) throw new NullPointerException("reporter was null")
@@ -15,40 +51,7 @@ trait KoanSuite extends FunSuite with CancelAfterFailure with Matchers {
     if (args.distributor == null) throw new NullPointerException("distributor was null")
     if (args.tracker == null) throw new NullPointerException("tracker was null")
 
-    class KoanReporter(wrappedReporter: Reporter) extends Reporter {
-      var succeeded = false
 
-      type HasTextAndName = {
-        val testText: String
-        val suiteName: String
-      }
-
-      def stopTests(e: HasTextAndName) {
-        note("")
-        note("*****************************************")
-        note("")
-        note(s"Student should meditate on the koan:")
-        note("")
-        note(s"~~ ${e.testText} ~~")
-        note("")
-        note(s"in the suite ${e.suiteName}.scala")
-        note("")
-        note("*****************************************")
-        note("")
-        args.stopper.requestStop()
-      }
-
-      override def apply(event: Event): Unit = {
-        event match {
-          case _: TestSucceeded => succeeded = true
-          case e: TestFailed => stopTests(e.asInstanceOf[HasTextAndName])
-          case e: TestPending => stopTests(e.asInstanceOf[HasTextAndName])
-          case _ =>
-        }
-
-        wrappedReporter(event)
-      }
-    }
 
     // If a testName is passed to run, just run that, else run the tests returned by testNames.
     testName match {
