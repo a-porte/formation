@@ -12,5 +12,11 @@ class StringCalculatorTest extends AnyFlatSpec :
   "comma " should "separate two digits that are added" in
     assert(StringCalculator().add("3,4") == "7")
 
+  "comma " should "separate 5 digits that are added" in
+    assert(StringCalculator().add("3,4,5,6,7") == "25")
+
+  "line feed " should " be dealt as a delimiter " in
+    assert(StringCalculator().add("1\n2,3") == "6")
+
 
 
