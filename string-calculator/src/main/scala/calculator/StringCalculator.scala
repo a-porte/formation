@@ -6,10 +6,19 @@ class StringCalculator :
     input match
       case "" => "0"
       case line =>
-        val intList = line.split(s"[^0-9-]").toList.filter(_.nonEmpty).map(_.toInt).filter(_ < 1000)
+        val delim: String = parseDelim(line)
+        val intList =  line.split(s"[,|\n|$delim]").toList.filter(_.nonEmpty)
+          .filterNot(_.contains("//")).map(_.toInt).filter(_ < 1000)
+
         intList.count(isNegative) match
           case 0 => intList.sum.toString
           case _ => raiseCustomException(intList.filter(isNegative))
+
+  private def parseDelim(line: String) =
+     line.split("\n").toList.filter(_.contains("//"))
+       .map(_.mkString).mkString //flattening everything
+       .replace("//", "")
+
 
   private def raiseCustomException(negList: List[Int]) =
     throw
