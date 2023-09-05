@@ -21,5 +21,12 @@ class StringCalculatorTest extends AnyFlatSpec :
   "add method " should "support custom delimiter" in
     assert(StringCalculator().add("//;\n1,2;3") == "6")
 
+  "one negative number " should "raise an exception " in {
+    val except = intercept[Exception] {
+      StringCalculator().add("-1,2,3")
+    }
+    assert(except.getMessage == "Les nombres négatifs ne sont pas autorisés")
+
+  }
 
 
