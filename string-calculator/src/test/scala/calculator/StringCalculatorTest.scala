@@ -35,3 +35,6 @@ class StringCalculatorTest extends AnyFlatSpec :
     assert(except.getMessage == "Les nombres négatifs ne sont pas autorisés : -5, -10")
 }
 
+
+  "number > 1 000 " should " be ignored" in
+    assert(StringCalculator().add("5,10,1664") == "15")
