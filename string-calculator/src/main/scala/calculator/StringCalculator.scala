@@ -13,5 +13,5 @@ class StringCalculator :
 
   private def raiseCustomException(negList: List[Int]) =
     throw
-      val innerInterpolatedString = if negList.size > 1 then " : " + negList.mkString(", ") else ""
+      val innerInterpolatedString = if negList.size > 1 then s" : ${negList.mkString(", ")}" else ""
       new NumberFormatException(s"Les nombres négatifs ne sont pas autorisés$innerInterpolatedString")
