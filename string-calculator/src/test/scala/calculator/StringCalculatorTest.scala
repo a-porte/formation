@@ -26,7 +26,12 @@ class StringCalculatorTest extends AnyFlatSpec :
       StringCalculator().add("-1,2,3")
     }
     assert(except.getMessage == "Les nombres négatifs ne sont pas autorisés")
-
   }
 
+  "several negative numbers " should "raise a different exception message " in {
+    val except = intercept[Exception] {
+    StringCalculator().add("-5,2,-10,9")
+    }
+    assert(except.getMessage == "Les nombres négatifs ne sont pas autorisés : -5, -10")
+}
 

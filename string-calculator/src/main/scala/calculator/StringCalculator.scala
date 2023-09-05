@@ -6,7 +6,8 @@ class StringCalculator :
       case "" => "0"
       case line =>
         val intList = line.split(s"[^0-9-]").toList.filter(_.nonEmpty).map(_.toInt)
-        if !intList.exists(_ < 0) then
-          intList.sum.toString
-        else
-          throw new NumberFormatException("Les nombres négatifs ne sont pas autorisés")
+        intList.count(_ < 0) match
+          case 0 => intList.sum.toString
+          case 1 => throw new NumberFormatException("Les nombres négatifs ne sont pas autorisés")
+          case 2 => throw new NumberFormatException(s"Les nombres négatifs ne sont pas autorisés : ${intList.filter(_ < 0).mkString(", ")}")
+
