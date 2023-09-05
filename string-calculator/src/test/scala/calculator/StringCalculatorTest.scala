@@ -18,5 +18,8 @@ class StringCalculatorTest extends AnyFlatSpec :
   "line feed " should " be dealt as a delimiter " in
     assert(StringCalculator().add("1\n2,3") == "6")
 
+  "add method " should "support custom delimiter" in
+    assert(StringCalculator().add("//;\n1,2;3") == "6")
+
 
 
