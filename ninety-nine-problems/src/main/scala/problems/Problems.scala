@@ -17,7 +17,7 @@ object Problems :
     if isRec then
       @tailrec
       def iter(innerL: List[Int], acc: Int): Int = innerL match
-        case head :: next :: tail => iter(tail, next)
+        case head :: next :: tail => iter(tail, head)
         case _ => acc
 
       iter(l, 0)
