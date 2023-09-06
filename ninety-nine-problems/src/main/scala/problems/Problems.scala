@@ -37,3 +37,26 @@ object Problems :
         .filter((_, i) => i == n - 1)
         .map((nb, _) => nb)
         .headOption.getOrElse(0)
+
+
+  def isPalindrome[A](l: List[A], isRec : Boolean = false): Boolean =
+    if isRec then //A is B but compiler warns about a suspicious shadowing type regarding iter method
+      @tailrec
+      def iter[B](innerL: List[B], begin: Option[B], end: Option[B], acc: Boolean = true) : Boolean =
+        innerL match
+          case Nil | _ :: Nil => acc // the alternative is to match single innerList i.e. when l List has an odd number of elements
+          case ::(head, next) =>
+            iter(
+              innerL.filterNot((e:B) => (e == innerL.last) || (e == head)),
+              Option(head),
+              Option(innerL.last),
+              acc && (begin == end)
+            )
+
+      l.headOption match
+        case Some(_) => iter(l, None, None)
+        case None => false
+
+    else
+      l.reverse == l
+    //l.foldRight(List[Char]())((element, acc) =>  acc :+ element) // is also valid

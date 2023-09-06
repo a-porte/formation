@@ -22,12 +22,15 @@ class ProblemsTest extends AnyFunSpec :
     }
   }
 
-  describe("when we want the nth element ") {
-    it("should be returned") {
-      assert(Problems.nth(1, listToTest) == 10)
+  describe("when we want to know if a list is a palindrome ") {
+    it("should say so") {
+      assert(Problems.isPalindrome("kayak".toList))
     }
-    it("should be returned even with a recursion") {
-      assert(Problems.nth(1, listToTest, isRec = true) == 10)
+    it("should say return false if it is not the case even with a recursion") {
+      assert(!Problems.isPalindrome("kayak!".toList, isRec = true))
+    }
+    it("should say return true if it is the case even with a recursion") {
+      assert(Problems.isPalindrome("kayak".toList, isRec = true))
     }
   }
 
