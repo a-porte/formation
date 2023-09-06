@@ -67,8 +67,8 @@ object Problems :
   def flatten[A ](l :List[List[A] | A])(implicit ev: ClassTag[A]): List[A] =
     l match
       case head :: next => head match  //why is there still the warn about patmat not being exhaustive and requiring case _:A ?
-        case nested: List[List[A] | A] => println(s" nested : $nested") ;flatten(nested) ::: flatten(next)
+        case nested: List[List[A] | A] => flatten(nested) ::: flatten(next)
         //why is there still a warning about nested's type not being able to be checked at runtime whereas there is a ClassTag ?
-        case  simple:A => println(s"head $head   "); simple:: flatten(next)
-        // cases have to be in that order otherwhise the test would fail ...
+        case  simple:A => simple:: flatten(next)
+        // cases have to be in that order otherwise the test would fail ...
       case Nil => Nil
