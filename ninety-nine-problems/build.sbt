@@ -9,5 +9,5 @@ lazy val root = (project in file("."))
       "org.scalatest" %% "scalatest-funspec" % "3.2.16" % "test"
     ),
 
-    scalacOptions ++= Seq("-Xfatal-warnings")
+    //scalacOptions ++= Seq("-Xfatal-warnings")
   )
