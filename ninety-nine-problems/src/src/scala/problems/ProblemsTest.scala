@@ -21,5 +21,13 @@ class ProblemsTest extends AnyFunSpec :
     }
   }
 
+  describe("when we want the nth element ") {
+    it("should be returned") {
+      assert(Problems.nth(1, 1 :: 2 :: 3 :: Nil) == 1)
+    }
+    it("should be returned even with a recursion") {
+      assert(Problems.nth(1, 1 :: 2 :: 3 :: Nil, isRec = true) == 1)
+    }
+  }
 
 
