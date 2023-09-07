@@ -83,3 +83,13 @@ class ProblemsTest extends AnyFunSpec :
       assert(Problems.drop(3, List("a", "b", "c", "d", "e", "f", "g")) == List("a", "b", "d", "e", "g"))
     }
   }
+  describe("when we want to split a list") {
+    it("should be ok") {
+      assert(Problems.split(3, List("a", "b", "c", "d", "e", "f", "g")) == (List("a", "b", "c"), List("d", "e", "f", "g")))
+    }
+  }
+  describe("when we want to extract element from a list to create a new one") {
+      it("should be ok") {
+        assert(Problems.slice(3, 5, List("a", "b", "c", "d", "e", "f", "g")) == List("d", "e", "f"))
+      }
+  }

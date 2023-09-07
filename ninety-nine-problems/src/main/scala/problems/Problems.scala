@@ -102,3 +102,9 @@ object Problems :
     l.zipWithIndex.collect{case (e, i) if (i+1) % n != 0 => e}
       //.filterNot((e, i) => (1+i) % n == 0)
       //.map((e, i) => e)
+
+
+  def split[A](n: Int, l: List[A]) : (List[A],List[A]) = l.splitAt(n)
+
+  def slice[A](fromExclude: Int, toIncluded: Int, l: List[A]) : List[A] =
+    l.dropRight(l.length - toIncluded - 1).drop(fromExclude)
