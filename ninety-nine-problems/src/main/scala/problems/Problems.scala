@@ -91,3 +91,6 @@ object Problems :
     encode(l).map{
       (nb, c) => if nb > 1 then (nb, c) else c
     }
+
+  def decode(l: List[(Int, String)]): List[String] =
+    l.flatMap ((nb, c) => List.tabulate(nb)(_ => c))
