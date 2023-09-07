@@ -70,4 +70,8 @@ object Problems :
         case  simple:Any => simple:: flatten(next)
       case Nil => Nil
       
-  def compress[A](l: List[A]): List[A] = ???
+  def compress[A](l: List[A]): List[A] = l.foldRight(List[A]()) {
+    case (element, acc) => acc.headOption match
+      case Some(value) if value == element => acc
+      case _ => element :: acc
+  }
