@@ -78,3 +78,8 @@ class ProblemsTest extends AnyFunSpec :
     }
   }
 
+  describe("when we want to drop every Nth elements") {
+    it("should be ok") {
+      assert(Problems.drop(3, List("a", "b", "c", "d", "e", "f", "g")) == List("a", "b", "d", "e", "g"))
+    }
+  }
