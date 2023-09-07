@@ -69,3 +69,5 @@ object Problems :
         case nested: List[_] => flatten(nested) ::: flatten(next)
         case  simple:Any => simple:: flatten(next)
       case Nil => Nil
+      
+  def compress[A](l: List[A]): List[A] = ???
