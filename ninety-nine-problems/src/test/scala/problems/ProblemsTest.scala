@@ -4,7 +4,8 @@ import org.scalatest.funspec.AnyFunSpec
 
 
 class ProblemsTest extends AnyFunSpec :
-  val listToTest: List[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil map (i => i *10)
+  private val listToTest: List[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil map (i => i *10)
+  private val stringList: List[String] = List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")
   describe("when PO receives a list") {
     it("should return the last element") {
       assert(Problems.last(listToTest) == 60)
@@ -43,7 +44,12 @@ class ProblemsTest extends AnyFunSpec :
 
   describe("when we want to delete consecutive duplicates in a list") {
     it("should be ok") {
-      assert(Problems.compress(List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")) == List("a", "b", "c", "a", "d", "e"))
+      assert(Problems.compress(stringList) == List("a", "b", "c", "a", "d", "e"))
+    }
+  }
 
+  describe("when we want to unflatten consecutive duplicates in a list inside nested lists") {
+    it("should be ok") {
+      assert(Problems.pack(stringList) == List(List("a", "a", "a", "a"), List("b"), List("c", "c"), List("a", "a"), List("d"), List("e", "e", "e", "e")))
     }
   }

@@ -73,5 +73,11 @@ object Problems :
   def compress[A](l: List[A]): List[A] = l.foldRight(List[A]()) {
     case (element, acc) => acc.headOption match
       case Some(value) if value == element => acc
-      case _ => element :: acc
+      case _ => element +: acc
+  }
+
+  def pack[A](l: List[A]) : List[List[A]] = l.foldRight(List[List[A]]()) {
+    case (element, ll) => ll.headOption match
+      case Some(value) if value.head == element => (element +: value) +: ll.tail
+      case _ => (element +: Nil) +: ll
   }
