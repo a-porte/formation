@@ -93,3 +93,12 @@ class ProblemsTest extends AnyFunSpec :
         assert(Problems.slice(3, 5, List("a", "b", "c", "d", "e", "f", "g")) == List("d", "e", "f"))
       }
   }
+
+  describe("when we want to translate elements in a list ") {
+    it("should accept positive input") {
+      assert(Problems.rotate(3, List("a", "b", "c", "d", "e", "f", "g")) == List("d", "e", "f", "g", "a", "b", "c"))
+    }
+    it ("should accept negative input") {
+      assert(Problems.rotate(-2, List("a", "b", "c", "d", "e", "f", "g")) == List("f", "g", "a", "b", "c", "d", "e"))
+    }
+  }

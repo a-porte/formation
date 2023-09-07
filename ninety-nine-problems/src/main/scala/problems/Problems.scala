@@ -108,3 +108,11 @@ object Problems :
 
   def slice[A](fromExclude: Int, toIncluded: Int, l: List[A]) : List[A] =
     l.dropRight(l.length - toIncluded - 1).drop(fromExclude)
+
+  def rotate[A](n: Int, l: List[A]) : List[A] =
+    if n > 0 then
+      val (begin, end) = split(n,l)
+      end ++ begin
+    else
+      val (begin, end) = split(n * -1,l.reverse)
+      begin.reverse ++ end.reverse
