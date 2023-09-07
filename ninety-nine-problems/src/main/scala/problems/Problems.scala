@@ -92,5 +92,8 @@ object Problems :
       (nb, c) => if nb > 1 then (nb, c) else c
     }
 
-  def decode(l: List[(Int, String)]): List[String] =
+  def decode[A](l: List[(Int, A)]): List[A] =
     l.flatMap ((nb, c) => List.tabulate(nb)(_ => c))
+
+
+  def duplicatedN[A](n: Int, l: List[A]) : List[A] = l.flatMap(e => List.tabulate(n)(_ => e))

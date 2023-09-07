@@ -72,3 +72,9 @@ class ProblemsTest extends AnyFunSpec :
     }
   }
 
+  describe("when we want to duplicate numbers N times") {
+    it("should be ok") {
+      assert(Problems.duplicatedN(3, List("a", "b", "c")) == List("a", "a", "a", "b", "b", "b", "c", "c", "c"))
+    }
+  }
+
