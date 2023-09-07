@@ -99,6 +99,6 @@ object Problems :
   def duplicatedN[A](n: Int, l: List[A]) : List[A] = l.flatMap(e => List.tabulate(n)(_ => e))
 
   def drop[A](n: Int, l: List[A]) : List[A] =
-    l.zipWithIndex
-      .filterNot((e, i) => (1+i) % n == 0)
-      .map((e, i) => e)
+    l.zipWithIndex.collect{case (e, i) if (i+1) % n != 0 => e}
+      //.filterNot((e, i) => (1+i) % n == 0)
+      //.map((e, i) => e)
