@@ -3,6 +3,7 @@ package problems
 import problems.Problems.flatten
 
 import scala.annotation.tailrec
+import scala.runtime.Nothing$
 
 object Problems :
   def last(l: List[Int], isRec: Boolean = false): Int =
@@ -81,3 +82,7 @@ object Problems :
       case Some(value) if value.head == element => (element +: value) +: ll.tail
       case _ => (element +: Nil) +: ll
   }
+
+ // should use pack method
+  def encode[A](l: List[A]): List[(Int, A)]=
+    pack(l).map(e => e.length -> e.head)
