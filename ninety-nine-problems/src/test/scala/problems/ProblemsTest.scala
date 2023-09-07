@@ -59,3 +59,9 @@ class ProblemsTest extends AnyFunSpec :
       assert(Problems.encode(stringList) == List((4, "a"), (1, "b"), (2, "c"), (2, "a"), (1, "d"), (4, "e")))
     }
   }
+
+  describe("when we want to use precedent method to count duplicate numbers per sublist except singletons") {
+    it("should be ok") {
+      assert(Problems.encodeModified(stringList) == List((4, "a"), "b", (2, "c"), (2, "a"), "d", (4, "e")))
+    }
+  }

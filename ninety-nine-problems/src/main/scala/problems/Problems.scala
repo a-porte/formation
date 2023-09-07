@@ -86,3 +86,8 @@ object Problems :
  // should use pack method
   def encode[A](l: List[A]): List[(Int, A)]=
     pack(l).map(e => e.length -> e.head)
+
+  def encodeModified(l: List[Any]): List[Any] =
+    encode(l).map{
+      (nb, c) => if nb > 1 then (nb, c) else c
+    }
