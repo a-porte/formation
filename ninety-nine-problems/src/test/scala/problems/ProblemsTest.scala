@@ -40,3 +40,10 @@ class ProblemsTest extends AnyFunSpec :
       assert(Problems.flatten(List(List(1, 1), 2, List(3, List(5, 8)))) == List(1, 1, 2, 3, 5, 8))
     }
   }
+
+  describe("when we want to delete consecutive duplicates in a list") {
+    it("should be ok") {
+      assert(Problems.compress(List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")) == List("a", "b", "c", "a", "d", "e"))
+
+    }
+  }
