@@ -110,9 +110,17 @@ object Problems :
     l.dropRight(l.length - toIncluded - 1).drop(fromExclude)
 
   def rotate[A](n: Int, l: List[A]) : List[A] =
+    @tailrec
+    def iter[A](n: Int, innerL: List[A], acc: List[A]) : List[A] =
+      if n > 0 then
+        iter(n-1, innerL.tail, acc :+ innerL.head)
+      else
+        innerL ++ acc
+
     if n > 0 then
-      val (begin, end) = split(n,l)
-      end ++ begin
+      iter(n-1,l.tail, l.head::Nil)
+    else if n == 0 then
+      l
     else
       val (begin, end) = split(n * -1,l.reverse)
       begin.reverse ++ end.reverse
