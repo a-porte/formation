@@ -1,7 +1,7 @@
 package problems
 
 import org.scalatest.funspec.AnyFunSpec
-
+import problems.Problems.{isCoprimeTo, isPrime, totient, primeFactors}
 
 class ProblemsTest extends AnyFunSpec :
   private val listToTest: List[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil map (i => i *10)
@@ -131,3 +131,44 @@ class ProblemsTest extends AnyFunSpec :
     }
   }
 
+  describe("when we want to extends Int class ") {
+    describe("and compute 'primeness' of a number") {
+      it("should fail for non prime number") {
+        assert(!2147483646.isPrime)
+      }
+      it("should be ok for prime numbers") {
+        assert(2147483647.isPrime)
+      }
+      it ("should be ok for 21") {
+        assert(21.isPrime)
+      }
+    }
+
+    describe("when we want to compute GCD of two numbers") {
+      it("should compute correctly") {
+        assert(Problems.gcd(63, 36) == 9)
+      }
+    }
+    describe("when we want to know if numbers are coprime from one another") {
+      it("should say so") {
+        assert(49.isCoprimeTo(64))
+      }
+      it("should be return false is there are not") {
+        assert(!10.isCoprimeTo(20))
+      }
+    }
+
+    describe("when we want to know the value of the totient / Euler's phi function") {
+      it("should be computed") {
+        assert(9.totient == List(1, 2, 4, 5, 7, 8).length)
+      }
+    }
+
+    describe("when we to compute prime factors of a positive inter") {
+      it("they should be computed") {
+        assert(315.primeFactors === List(3, 3, 5, 7))
+      }
+    }
+
+
+  }

@@ -153,3 +153,30 @@ object Problems :
       .toList
       .sortBy{(_, v) =>  v}
       .flatMap{(k, _) =>  k}
+
+  @tailrec
+  def gcd(a: Int, b: Int) : Int = if b == 0 then a else gcd(b, a % b)
+
+  extension (i: Int)
+    def isPrime: Boolean = (1 to Math.sqrt(i.toDouble).toInt).inclusive.count(i % _ == 0) < 3
+    def isCoprimeTo(that: Int): Boolean = gcd(i, that) == 1
+    def totient: Int = (1 to i).map(_.isCoprimeTo(i)).count(_ == true)
+    def primeFactors: List[Int] =
+      def iter(n: Int, lToSqrt: List[Int], acc: List[Int]) : List[Int] = ???
+     /*   if n.isPrime then
+          println(s"is prime $n ${n.isPrime}")
+          acc
+        else if n % lToSqrt.head == 0 then
+          println(s"else if $n $lToSqrt $acc")
+          iter(n / lToSqrt.head, lToSqrt, acc :+ lToSqrt.head)
+        else
+          println(s"else $n $lToSqrt $acc")
+          iter(n , lToSqrt.tail, acc)
+      /*lToSqrt match
+        case ::(head, next) =>
+          if n.isCoprimeTo(head) then
+            iter(n / head, lToSqrt, acc :+ head)
+          else
+            iter(n, lToSqrt.tail, acc)
+        case Nil => acc*/*/
+      iter(i, (1 to Math.sqrt(i.toDouble).toInt).toList.reverse, Nil)
