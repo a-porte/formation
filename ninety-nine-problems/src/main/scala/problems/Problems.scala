@@ -130,3 +130,19 @@ object Problems :
       val (begin, end) = split(n * -1, l.reverse)
       begin.reverse ++ end.reverse
       //rotate(l.length + n, l) // is also valid instead of using split ! but rotate would be tailrec then
+
+  def insertAt[A](item: A, at: Int, l: List[A], isRec: Boolean = false ) : List[A] =
+    if isRec then
+      @tailrec
+      def iter(it: A, n: Int, innerL: List[A], acc: List[A]) : List[A] =
+        if n == 0 then
+          (acc :+ item) ++: innerL
+        else
+          iter(it, n-1, innerL.tail, acc :+ innerL.head )
+      iter(item, at, l, Nil)
+    else
+      val (firstPart, secondPart) = l.splitAt(at)
+      firstPart :++ (item +: secondPart)
+
+
+  def lSort[A](l : List[List[A]]) : List[List[A]] = l.sortBy(_.length)

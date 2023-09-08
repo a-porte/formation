@@ -108,3 +108,18 @@ class ProblemsTest extends AnyFunSpec :
       assert(Problems.rotate(-2, List("a", "b", "c", "d", "e", "f", "g"), isRec = true) == List("f", "g", "a", "b", "c", "d", "e"))
     }
   }
+
+  describe("when we want to insert a item to a specific index inside a list") {
+    it("should be ok"){
+      assert(Problems.insertAt("99", 2, List("a", "b", "c", "d", "e", "f", "g")) == List("a", "b", "99", "c", "d", "e", "f", "g") )
+    }
+    it("should be ok with a recursive algo") {
+      assert(Problems.insertAt("99", 2, List("a", "b", "c", "d", "e", "f", "g"), isRec = true) == List("a", "b", "99", "c", "d", "e", "f", "g") )
+    }
+  }
+
+  describe("when we want to sort sublists according to their respective length") {
+    it("should be ok") {
+      assert(Problems.lSort(List(List("a", "b", "c", "d"), List("e", "f", "g"), List("h"))) == List(List("h"), List("e", "f", "g"),List("a", "b", "c", "d")))
+    }
+  }
