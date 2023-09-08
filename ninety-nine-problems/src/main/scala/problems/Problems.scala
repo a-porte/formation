@@ -109,18 +109,24 @@ object Problems :
   def slice[A](fromExclude: Int, toIncluded: Int, l: List[A]) : List[A] =
     l.dropRight(l.length - toIncluded - 1).drop(fromExclude)
 
-  def rotate[A](n: Int, l: List[A]) : List[A] =
+  def rotate[A](n: Int, l: List[A], isRec: Boolean = false) : List[A] = if isRec then
     @tailrec
-    def iter[A](n: Int, innerL: List[A], acc: List[A]) : List[A] =
+    def iter[B](n: Int, innerL: List[B], acc: List[B]): List[B] =
       if n > 0 then
-        iter(n-1, innerL.tail, acc :+ innerL.head)
+        iter(n - 1, innerL.tail, acc :+ innerL.head)
+      else if n == 0 then
+        innerL :++ acc
       else
-        innerL ++ acc
+        iter(innerL.length + n, innerL, Nil)
+    iter(n, l, Nil)
 
+  else //if not recursive
     if n > 0 then
-      iter(n-1,l.tail, l.head::Nil)
+      val (begin, end) = split(n, l)
+      end ++ begin
     else if n == 0 then
       l
     else
-      val (begin, end) = split(n * -1,l.reverse)
+      val (begin, end) = split(n * -1, l.reverse)
       begin.reverse ++ end.reverse
+      //rotate(l.length + n, l) // is also valid instead of using split ! but rotate would be tailrec then

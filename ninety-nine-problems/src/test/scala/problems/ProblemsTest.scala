@@ -101,4 +101,10 @@ class ProblemsTest extends AnyFunSpec :
     it ("should accept negative input") {
       assert(Problems.rotate(-2, List("a", "b", "c", "d", "e", "f", "g")) == List("f", "g", "a", "b", "c", "d", "e"))
     }
+    it ("should accept positive input and deal recursively with it") {
+      assert(Problems.rotate(3, List("a", "b", "c", "d", "e", "f", "g"), isRec = true) == List("d", "e", "f", "g", "a", "b", "c"))
+    }
+    it("should accept negative input and deal recursively with it") {
+      assert(Problems.rotate(-2, List("a", "b", "c", "d", "e", "f", "g"), isRec = true) == List("f", "g", "a", "b", "c", "d", "e"))
+    }
   }
