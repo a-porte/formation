@@ -123,3 +123,11 @@ class ProblemsTest extends AnyFunSpec :
       assert(Problems.lSort(List(List("a", "b", "c", "d"), List("e", "f", "g"), List("h"))) == List(List("h"), List("e", "f", "g"),List("a", "b", "c", "d")))
     }
   }
+
+  describe("when we want to sort sublists according to their respective length's frequency") {
+    it("should be ok") {
+      assert(Problems.lSortFreq(List(List("a"), List("a", "b", "c", "d"), List("a"), List("e", "f", "g"), List("a"), List("h"), List("a", "b", "c", "d"))) ==
+        List(List("e", "f", "g"), List("h"), List("a", "b", "c", "d"), List("a", "b", "c", "d"), List("a"), List("a"), List("a") ))
+    }
+  }
+

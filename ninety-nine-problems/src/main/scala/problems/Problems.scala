@@ -146,3 +146,10 @@ object Problems :
 
 
   def lSort[A](l : List[List[A]]) : List[List[A]] = l.sortBy(_.length)
+
+  def lSortFreq[A](l : List[List[A]]) : List[List[A]] =
+    l.groupBy(identity )
+      .map{(_,v) =>  v -> v.length}
+      .toList
+      .sortBy{(_, v) =>  v}
+      .flatMap{(k, _) =>  k}
