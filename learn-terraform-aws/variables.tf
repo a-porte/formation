@@ -4,10 +4,4 @@ variable "AWS_REGION" {
   default = "eu-west-2" #mandatory
   description = "servers' region" #optional
 }
-variable "SECRET" {
-  default = {
-    "access_key" = ""
-    "secret_key" = ""
-
-  }
-}
+variable "SECRET" {}

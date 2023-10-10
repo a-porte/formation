@@ -58,3 +58,7 @@ resource "aws_security_group" "secu_grp" {
 #    cidr_blocks = ["0.0.0.0/0"]
 #  }
 }
+
+output "public_id" {
+  value = aws_instance.my_ec2_instance.public_ip
+}
