@@ -1,7 +1,7 @@
 provider "aws" {
   region = var.AWS_REGION  # or "${var.AWS_REGION}"
-  access_key = ""
-  secret_key = ""
+  access_key = var.SECRET.access_key
+  secret_key = var.SECRET["secret_key"] #both way to access a map element
 }
 
 resource "aws_instance" "my_ec2_instance" {
