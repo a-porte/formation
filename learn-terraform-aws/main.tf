@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-3"
+  region = var.AWS_REGION  # or "${var.AWS_REGION}"
   access_key = ""
   secret_key = ""
 }
@@ -43,4 +43,18 @@ resource "aws_security_group" "secu_grp" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+#  egress {
+#    from_port = 8
+#    to_port = 0
+#    protocol = "icmp"
+#    cidr_blocks = ["0.0.0.0/0"]
+#  } # CIDR blocks
+
+#  ingress {
+#    from_port = 8
+#    to_port = 0
+#    protocol = "icmp"
+#    cidr_blocks = ["0.0.0.0/0"]
+#  }
 }
