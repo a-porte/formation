@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "my_ec2_instance" {
-  ami = "ami-0f82b13d37cd1e8cc"
+  ami = var.AWS_AMIS[var.AWS_REGION] #change AMI according to region name
   instance_type = "t2.nano"
   tags = {
     Name = "test_ec2_with_terraform"
