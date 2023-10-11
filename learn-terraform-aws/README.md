@@ -24,7 +24,7 @@
 - A valid AWS account is required
 - Create in IAM a user dedicated to using Terraform (and thus avoiding using the root user)
 - Once created, open its details in IAM
-- Set the "AmazonEC2FullAccess" policy on the aforementioned user
+- Set the `AmazonEC2FullAccess` and `AmazonS3FullAccess` policies on the aforementioned user
 - Create access key for it, to allow programmatic access to AWS, this secret is to be used by the aws `provider`
 
 

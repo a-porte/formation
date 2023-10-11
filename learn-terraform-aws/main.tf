@@ -17,7 +17,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami = var.AWS_AMIS[var.AWS_REGION] #change AMI according to region name
   instance_type = "t2.nano"
   tags = {
-    Name = "test_ec2_with_terraform"
+    Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
   }
 
   connection {
@@ -44,6 +44,7 @@ resource "aws_instance" "my_ec2_instance" {
   # provisioners should be used in last resort
   #https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax
   provisioner "local-exec" { # realizes a defined command on the machine where and when apply is executed
+   # on_failure = continue # by default : fail
     command = "echo ${aws_instance.my_ec2_instance.public_ip} > ip_address.txt"
   }
 
@@ -60,9 +61,11 @@ resource "aws_instance" "my_ec2_instance" {
 
  #requires a connection
   # execute commands on the remote
-#  provisioner "remote-exec" {
-#    inline = ["ls -lat /tmp"]
-#  }
+  #provisioner "remote-exec" {
+    #on_failure = continue
+
+  #  inline = ["ls -lat /tmp"]
+  #}
 }
 
 resource "aws_security_group" "secu_grp" {
@@ -109,4 +112,14 @@ resource "aws_security_group" "secu_grp" {
 
 output "public_ip" {
   value = aws_instance.my_ec2_instance.public_ip
+}
+
+#if this block is added whereas a local backend already exists
+# execute `terraform init -migrate-state` : backend info will be sent to the S3 bucket
+terraform {
+  backend "s3" {
+    bucket = "my-ec3-bucket-11102023"
+    key = "states/terraform.states"
+    region = "eu-west-3"
+  }
 }
