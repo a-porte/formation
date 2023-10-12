@@ -9,22 +9,10 @@ module "website_s3_bucket" {
 
 }
 
-data "aws_ami" "ami-ubuntu" {
-  most_recent = true
-  owners = [137112412989] # got thanks to command line aws ec2 describe-images --region eu-west-3 --image-ids ami-0f82b13d37cd1e8cc
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023.2.20231002.0-kernel-6.1-x86_64"]
-    #this filter is similar to the following command line
-    #  aws ec2 describe-images --owners 137112412989 --region eu-west-3 --filters 'Name=name,Values=al2023-ami-2023.2.20231002.0-kernel-6.1-x86_64'
-  }
+module "data" {
+  source = "./modules/data"
 }
 
-# requires `terraform init -upgrade`
-data "external" "name" {
-  program = ["python", "scripts/rand-name.py"]
-}
 
 # Have not been able send key to EC2 because of a lack of authorisations
 resource "aws_key_pair" "key_pair" {
@@ -38,10 +26,10 @@ resource "aws_instance" "my_ec2_instance" {
   }
   key_name = aws_key_pair.key_pair.key_name
   #ami = var.AWS_AMIS[var.AWS_REGION] #change AMI according to region name
-  ami = data.aws_ami.ami-ubuntu.id
+  ami = module.data.ami_id
   instance_type = "t2.nano"
   tags = {
-    Name = data.external.name.result.random_name
+    Name = module.data.random_name
     #Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
   }
 
