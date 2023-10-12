@@ -37,6 +37,27 @@
 - `terraform taint <provider_resourceType>.<resourceName>` : marks a resource as "tainted" : it will be dropped and recreated during the next `apply` execution, as seen below
   ![test](captures/taint.png)
 
+## Terraform's functionalities
+### Backend
+
+### Workspaces
+Enable the use of the same scripts to create resources with, for example, different names
+e.g. the EC2 resource's name changes according to the workspace in which we are
+- `default` workspace
+  - ![default](captures/wkspace_default.png)
+- `prod` workspace
+  - ![prod](captures/wkspace_prod.png)
+
+### Data resources
+#### Relative to a provider
+Can use a provider API to gather some information, for example an AMI id
+
+### External 
+Can aquire data coming for example from a script
+Should be a last resort option because it creates dependencies outside Terraform
+e.g. using an external script to change a resource's name :
+![external_data](captures/external%20data.png)
+
 ## Terraform documentation
 https://developer.hashicorp.com/terraform/language
 

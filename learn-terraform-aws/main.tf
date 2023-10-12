@@ -3,10 +3,28 @@ provider "aws" {
   access_key = var.SECRET.access_key
   secret_key = var.SECRET["secret_key"] #both way to access a map element
 }
+
+data "aws_ami" "ami-ubuntu" {
+  most_recent = true
+  owners = [137112412989] # got thanks to command line aws ec2 describe-images --region eu-west-3 --image-ids ami-0f82b13d37cd1e8cc
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.2.20231002.0-kernel-6.1-x86_64"]
+    #this filter is similar to the following command line
+    #  aws ec2 describe-images --owners 137112412989 --region eu-west-3 --filters 'Name=name,Values=al2023-ami-2023.2.20231002.0-kernel-6.1-x86_64'
+  }
+}
+
+# requires `terraform init -upgrade`
+data "external" "name" {
+  program = ["python", "scripts/rand-name.py"]
+}
+
 # Have not been able send key to EC2 because of a lack of authorisations
 resource "aws_key_pair" "key_pair" {
   public_key = file("./terraform.pub")
-  key_name = "terraform-key"
+  key_name =  terraform.workspace == "prod" ? "prod-key" : "terraform-key"
 }
 
 resource "aws_instance" "my_ec2_instance" {
@@ -14,10 +32,12 @@ resource "aws_instance" "my_ec2_instance" {
     create = "50s"
   }
   key_name = aws_key_pair.key_pair.key_name
-  ami = var.AWS_AMIS[var.AWS_REGION] #change AMI according to region name
+  #ami = var.AWS_AMIS[var.AWS_REGION] #change AMI according to region name
+  ami = data.aws_ami.ami-ubuntu.id
   instance_type = "t2.nano"
   tags = {
-    Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
+    Name = "${data.external.name.result.random_name}"
+    #Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
   }
 
   connection {
@@ -43,15 +63,15 @@ resource "aws_instance" "my_ec2_instance" {
 
   # provisioners should be used in last resort
   #https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax
-  provisioner "local-exec" { # realizes a defined command on the machine where and when apply is executed
+  #provisioner "local-exec" { # realizes a defined command on the machine where and when apply is executed
    # on_failure = continue # by default : fail
-    command = "echo ${aws_instance.my_ec2_instance.public_ip} > ip_address.txt"
-  }
+  #  command = "echo ${aws_instance.my_ec2_instance.public_ip} > ip_address.txt"
+  #}
 
-  provisioner "local-exec" {
-    when = destroy
-    command = "rm -v ip_address.txt"
-  }
+  #provisioner "local-exec" {
+  #  when = destroy
+  #  command = "rm -v ip_address.txt"
+  #}
 
 #  provisioner "file" {
   # copies from <source> on the local machine to <destination> on the remote one
@@ -69,7 +89,7 @@ resource "aws_instance" "my_ec2_instance" {
 }
 
 resource "aws_security_group" "secu_grp" {
-  name = "terraform-secu-group"
+  name = "${terraform.workspace == "prod" ? "prod-secu-group" : "terraform-secu-group"}"
 
   #this resource is required so that EC2 can receive external requests
   egress {
@@ -109,6 +129,13 @@ resource "aws_security_group" "secu_grp" {
 #    cidr_blocks = ["0.0.0.0/0"]
 #  }
 }
+
+#resource "aws_s3_bucket" "my-ec3-bucket-11102023" {
+#  tags = {
+#    Name = "aws_s3_bucket.my-ec3-bucket-11102023"
+#  }
+#  bucket = "my-ec3-bucket-11102023"
+#}
 
 output "public_ip" {
   value = aws_instance.my_ec2_instance.public_ip
