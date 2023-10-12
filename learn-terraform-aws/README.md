@@ -53,10 +53,21 @@ e.g. the EC2 resource's name changes according to the workspace in which we are
 Can use a provider API to gather some information, for example an AMI id
 
 ### External 
-Can aquire data coming for example from a script
+Can acquire data coming for example from a script
 Should be a last resort option because it creates dependencies outside Terraform
 e.g. using an external script to change a resource's name :
 ![external_data](captures/external%20data.png)
+
+### Modules
+A module his some kind of library, used to slice config in order to reuse it and to avoid code duplication
+A module is composed of
+- a folder
+  - `main.tf`
+  - `outputs.tf` if need be
+  - `variables.tf` is need be
+
+A module must be declared in order to be used, plus `terraform init` is mandatory in order to import it
+Modules can be found online.
 
 ## Terraform documentation
 https://developer.hashicorp.com/terraform/language

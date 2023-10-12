@@ -2,6 +2,25 @@ module "data" {
   source = "./../data"
 }
 
+variable "NB_INSTANCES" {
+  default = 4
+}
+
+variable "IAM_USERS" {
+  default = ["a", "b", "c"]
+}
+
+resource "aws_iam_user" "aws_users" {
+  #count = length(var.IAM_USERS)
+  #name = var.IAM_USERS[count.index]
+  for_each = toset(var.IAM_USERS)
+  name = each.value
+  tags = {
+    key = each.key
+    value = each.value
+  }
+}
+
 # Have not been able send key to EC2 because of a lack of authorisations
 resource "aws_key_pair" "key_pair" {
   public_key = file("./terraform.pub")
@@ -9,6 +28,9 @@ resource "aws_key_pair" "key_pair" {
 }
 
 resource "aws_instance" "my_ec2_instance" {
+  count = var.NB_INSTANCES #will create as many resources as asked
+  #index can be retrieved this way count.index
+  # has an impact on output variables
   timeouts { # appears to do nothing at all if a remote_exec is ongoing
     create = "50s"
   }

@@ -17,6 +17,15 @@ module "base" {
   source = "./modules/base"
 }
 
+# One can download a module from a remote repo like this
+# module "name" {
+#  source = "<repo @>"
+# }
+
+# module "name" {
+#  source = "hashicop/..."
+#  version = ...
+# }
 
 
 
