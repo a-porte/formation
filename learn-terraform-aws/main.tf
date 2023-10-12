@@ -4,6 +4,11 @@ provider "aws" {
   secret_key = var.SECRET["secret_key"] #both way to access a map element
 }
 
+module "website_s3_bucket" {
+  source = "./modules/aws-s3"
+
+}
+
 data "aws_ami" "ami-ubuntu" {
   most_recent = true
   owners = [137112412989] # got thanks to command line aws ec2 describe-images --region eu-west-3 --image-ids ami-0f82b13d37cd1e8cc
@@ -36,7 +41,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami = data.aws_ami.ami-ubuntu.id
   instance_type = "t2.nano"
   tags = {
-    Name = "${data.external.name.result.random_name}"
+    Name = data.external.name.result.random_name
     #Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
   }
 
@@ -140,6 +145,15 @@ resource "aws_security_group" "secu_grp" {
 output "public_ip" {
   value = aws_instance.my_ec2_instance.public_ip
 }
+
+output "endpoint" {
+  value = module.website_s3_bucket.website_endpoint
+}
+
+output "bucket_name" {
+  value = module.website_s3_bucket.name
+}
+
 
 #if this block is added whereas a local backend already exists
 # execute `terraform init -migrate-state` : backend info will be sent to the S3 bucket
