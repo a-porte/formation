@@ -116,7 +116,18 @@ resource "aws_autoscaling_group" "dyna_grp_name" {
 ````
 
 #### For loops
-`for <var> in <collection> : <actions>`
+````terraform 
+[for <var> in <collection> : <actions>] # produces a list
+{for <var> in <collection> : <var> => <action>} # produces a map
+````
+
+#### Lifecycle
+Inner block used inside a resource one to customize its lifecycle, for example avoiding its replacement.
+
+For example, in `modules/base/main.tf`, EC2 instances are invoked and have randomly computed names, playing a 2nd time ``apply`` should lead to the names being changed![](/captures/replaced_name.png)
+This behaviour can be avoided thanks to the ``ignore_changes`` block.
+
+Thus, running a second time the ``apply`` command results in an absence of changes ![](./captures/lifecycle_ignore.png)
 
 ## Terraform documentation
 https://developer.hashicorp.com/terraform/language

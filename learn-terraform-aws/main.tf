@@ -20,6 +20,10 @@ module "dynamic_block" {
   source = "./modules/dynamic"
 }
 
+module "operations" {
+  source = "./modules/operations"
+}
+
 # One can download a module from a remote repo like this
 # module "name" {
 #  source = "<repo @>"
@@ -33,24 +37,6 @@ module "dynamic_block" {
 
 
 
-output "public_ip" {
-  value = module.base.aws_instance_ip # aws_instance.my_ec2_instance.public_ip
-}
-
-output "endpoint" {
-  value = module.website_s3_bucket.website_endpoint
-}
-
-output "bucket_name" {
-  value = module.website_s3_bucket.name
-}
-
-output "dynamic_tag" {
-  value = module.dynamic_block.autoscale_grp_tags
-}
-output "custom_for" {
-  value = module.dynamic_block.custom_list
-}
 
 #if this block is added whereas a local backend already exists
 # execute `terraform init -migrate-state` : backend info will be sent to the S3 bucket

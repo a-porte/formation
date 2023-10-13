@@ -24,10 +24,13 @@ resource "aws_iam_user" "aws_users" {
 # Have not been able send key to EC2 because of a lack of authorisations
 resource "aws_key_pair" "key_pair" {
   public_key = file("./terraform.pub")
-  key_name =  terraform.workspace == "prod" ? "prod-key" : "terraform-key"
+  key_name =  terraform.workspace == "prod" ? "prod-key" : "terraform-key" # predicate ? if is true : else
 }
 
 resource "aws_instance" "my_ec2_instance" {
+  lifecycle {
+    ignore_changes = [tags]
+  }
   count = var.NB_INSTANCES #will create as many resources as asked
   #index can be retrieved this way count.index
   # has an impact on output variables
