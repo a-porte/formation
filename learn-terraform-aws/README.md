@@ -39,6 +39,9 @@
 
 ## Terraform's functionalities
 ### Backend
+Where Terraform saves the `terraform.tfstate` and `terraform.tfstate.backupstate` files
+By default those files are saved locally.
+Can be changed so that the files are stored in a S3 bucket.
 
 ### Workspaces
 Enable the use of the same scripts to create resources with, for example, different names
