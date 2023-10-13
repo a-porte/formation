@@ -3,7 +3,7 @@ module "data" {
 }
 
 variable "NB_INSTANCES" {
-  default = 4
+  default = 10
 }
 
 variable "IAM_USERS" {
@@ -39,7 +39,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami = module.data.ami_id
   instance_type = "t2.nano"
   tags = {
-    Name = module.data.random_name
+    Name = format("%s-%s", module.data.random_name, count.index)
     #Name = "${terraform.workspace == "prod" ? "prod-ec2" : "test_ec2_with_terraform"}"
   }
 
