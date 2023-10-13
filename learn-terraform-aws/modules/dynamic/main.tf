@@ -2,6 +2,13 @@ module "data" {
   source = "./../data"
 }
 
+variable "MY_TAGS" {
+  default = {
+    env = "prod"
+    domain = "risk"
+  }
+}
+
 
 resource "aws_autoscaling_group" "my_autoscaling_gp" {
   availability_zones = ["eu-west-3a"]
@@ -9,17 +16,17 @@ resource "aws_autoscaling_group" "my_autoscaling_gp" {
   max_size = 5
   min_size = 0
 # declaration of multiple tags => code duplication
-  tag {
-    key                 = "env"
-    propagate_at_launch = false
-    value               = "prod"
+  dynamic "tag" {
+    for_each = var.MY_TAGS
+    content {
+      key = tag.key
+      value = tag.value
+      propagate_at_launch = false
+    }
   }
 
-  tag {
-    key                 = "domain"
-    propagate_at_launch = false
-    value               = "risk"
-  }
+
+
 
   mixed_instances_policy {
     launch_template {

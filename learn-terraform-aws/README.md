@@ -11,7 +11,7 @@
 ### Azure CLI
 - A valid Azure account and subscription is required to perform the other actions
 - Install [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli)
-- Login thanks to `az login`, a prompt should open in the browser and an `id` should be printed on the CLI : this `id` is to be reused afterwars
+- Login thanks to `az login`, a prompt should open in the browser and an `id` should be printed on the CLI : this `id` is to be reused afterwards
 - `az account set --subscription "<id>"`
 - `az ad sp create-for-rbac -role="Contributor" --scopres=/subscriptions/<id>`
 - Tokens should be printed, and need to be stored as environment variables thanks to :
@@ -28,10 +28,10 @@
 - Create access key for it, to allow programmatic access to AWS, this secret is to be used by the aws `provider`
 
 
-## Usefull commands
+## Useful commands
 - `terraform init` downloads providers and prepare the env
 - `terraform plan` prints the different actions that Terraform plans to do according to `main.tf` file
-- `terraform fmt` reformate files to a canonical form if need be, changed files are printed afterwards
+- `terraform fmt` reformat files to a canonical form if need be, changed files are printed afterwards
 - `terraform apply [-var "<var_name>=<var_value>]` apply Terraform's plan, variables may be overriden
 - `terraform destroy` the exact opposite of `terraform apply`
 - `terraform taint <provider_resourceType>.<resourceName>` : marks a resource as "tainted" : it will be dropped and recreated during the next `apply` execution, as seen below
@@ -68,6 +68,55 @@ A module is composed of
 
 A module must be declared in order to be used, plus `terraform init` is mandatory in order to import it
 Modules can be found online.
+
+
+### Meta arguments
+#### for_each
+`for_each` [is used as a preferred alternative](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each) over `count`
+
+It's used this way 
+
+````terraform
+for_each = toset(<a list>) # or <my_map>
+<field_name> = each.key # each.value can be used with a map
+```` 
+
+#### Dynamic blocks
+Repeatable configuration inside a top-level block (e.g. resource) can require repetitive information.
+Code duplication can be avoided thanks to dynamic blocks : the repetition will be done during runtime.
+````terraform
+resource "aws_autoscaling_group" "grp_name"  {
+  tag {
+    #tag #1 content
+  }
+  # .
+  # .
+  # .
+  tag {
+    #tag #n content
+  }
+}
+````
+can be changed this way
+
+````terraform
+variable "TAG_CONTENT" {
+  type = map
+  # tags content
+}
+
+resource "aws_autoscaling_group" "dyna_grp_name" {
+  dynamic "tag" {
+    for_each = var.TAG_CONTENT
+    content {
+      #tag content making use of tag.key and tag.value
+    }
+  }
+}
+````
+
+#### For loops
+`for <var> in <collection> : <actions>`
 
 ## Terraform documentation
 https://developer.hashicorp.com/terraform/language

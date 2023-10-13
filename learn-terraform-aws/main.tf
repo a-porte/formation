@@ -45,6 +45,12 @@ output "bucket_name" {
   value = module.website_s3_bucket.name
 }
 
+output "dynamic_tag" {
+  value = module.dynamic_block.autoscale_grp_tags
+}
+output "custom_for" {
+  value = module.dynamic_block.custom_list
+}
 
 #if this block is added whereas a local backend already exists
 # execute `terraform init -migrate-state` : backend info will be sent to the S3 bucket
