@@ -3,7 +3,7 @@ module "data" {
 }
 
 variable "NB_INSTANCES" {
-  default = 10
+  default = 4
 }
 
 variable "IAM_USERS" {
@@ -17,7 +17,7 @@ resource "aws_iam_user" "aws_users" {
   name = each.value
   tags = {
     key = each.key
-    value = each.value
+    value = each.value #a a set is provided, each.value equals each.key, distinction only exists for maps
   }
 }
 

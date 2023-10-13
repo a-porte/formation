@@ -6,7 +6,6 @@ provider "aws" {
 
 module "website_s3_bucket" {
   source = "./modules/aws-s3"
-
 }
 
 module "data" {
@@ -15,6 +14,10 @@ module "data" {
 
 module "base" {
   source = "./modules/base"
+}
+
+module "dynamic_block" {
+  source = "./modules/dynamic"
 }
 
 # One can download a module from a remote repo like this
