@@ -9,7 +9,7 @@
 - [Logical date](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#concepts-dag-run) (or `@deprecated` *execution date*) : Functional date used by the DAG. Quite different from the date of the execution of the DAG. For ex., we're on 05/26 and want to process one-week-old data : the logical date will be 05/19.
 - [Data interval](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#data-interval) : Represents the time range over which a DAG is executed, can be `@hourly`, `@daily`, etc. ``Logical date`` represents the beginning of a `data interval`. If scheduled, the DAG will be first executed once `logical date + 1st data interval` is ended. *Indeed, if we want to process data daily, the DAGs will be executed once each day is over.*
 - `Catchup` and `backfill` : actually the same thing but occurring at different moments :
-  - [catchup](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#catchup) : when defining a DAG, if `catchup` argument is set to `false`, the scheduler will execute a DAG for every date where there is no `logical date`.
+  - [catchup](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#catchup) : when defining a DAG, if `catchup` argument is set to `True`, the scheduler will execute a DAG for every date where there is no `logical date`.
   - [backfill](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill) : capacity to execute a DAG over a period of time (prior to `start_date`!), executed on demand *via* `airflow dags backfill -s <start_date> -e <end_date> <DAG id>`
 - `DAG` run : instantiation of a DAG
 - [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create task according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in UI.
@@ -19,9 +19,13 @@ Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.
 ## Useful command lines
 ### When writing a new DAG
 - ``python <path/to/dag>.py #should return no error`` 
+- ``airflow task test <DAG id> <task id>`` : executes <task id> from <DAG id>
+- ``airflow dags test <DAG id> [--subdir <subdir>]`` : executes <DAG id> (located in <subdir>, if need be)
 
 ### Miscellaneous
-
+- ``airflow tasks list <DAG id> [--tree]`` : prints the tasks for a given DAG (+ task' hierarchy with --tree flag)
+- ``airflow dags list`` : prints the DAGs seen in $AIRFLOW_HOME (should be ~/airflow/dags)
+ 
 ## DAG configuration file's structure
 ### "Default" API (prior to Airflow 2.0)
 ````python
@@ -71,7 +75,9 @@ with DAG(
 from airflow.decorators import dag, task
 
 @dag(
-    <args>
+    schedule = ...,
+    start_date =  ...,
+    catchup = True | False
 )
 def <DAG_s_name>():
     @task(<args if need be>)
