@@ -32,12 +32,12 @@ Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.
 from airflow import DAG
 
 from airflow.operator.<ope> import <myOperator>
-from airflow.operator.python import <PythonOperator>
+from airflow.operator.python import PythonOperator
 
 with DAG(
     <args>,
     default_args = {...}
-)  dag:
+) as dag:
   def my_func(**kwargs):
     ti = kwargs["ti"] #task instance
     <var> = ti.xcom_pull(task_ids="...", key ="...") #cross communication enables tasks communication
