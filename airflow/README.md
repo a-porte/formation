@@ -15,6 +15,13 @@
 - [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create task according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in UI.
 
 Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.x/)
+
+## Useful command lines
+### When writing a new DAG
+- ``python <path/to/dag>.py #should return no error`` 
+
+### Miscellaneous
+
 ## DAG configuration file's structure
 ### "Default" API (prior to Airflow 2.0)
 ````python
@@ -61,7 +68,7 @@ with DAG(
 ````
 ### [TaskFlow API](https://airflow.apache.org/docs/apache-airflow/stable/tutorial/taskflow.html) 
 ````python
-from airflow.decorator import dag, task
+from airflow.decorators import dag, task
 
 @dag(
     <args>
@@ -79,7 +86,6 @@ def <DAG_s_name>():
     <my_second_fun>(<var>)
 
 <DAG_s_name>()
-
 ````
 
 
