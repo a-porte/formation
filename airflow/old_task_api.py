@@ -19,7 +19,7 @@ with DAG(
 
     def process_data(**kwargs):
         ti = kwargs["ti"]
-        input: dict = ti.xcom_pull(task_ids="get_data", key = "to_process")
+        input= ti.xcom_pull(task_ids="get_data", key = "to_process")
 
         for k in input:
             print(">> (value+2) is ", input[k] + 2)
