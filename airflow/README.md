@@ -1,7 +1,14 @@
 # Airflow
 
+
+## Important information
+Use WSL to install and run ``airflow`` if using Windows.
+When ``airflow webserver`` is executed, then the UI can be accessed *via* a browser at localhost:8080
+``airflow scheduler [-D|--daemon]`` may be required if the following message is displayed by the UI.
+![img](./captures/scheduler_off.png)
+
 ## Definitions
-- task : "basic unit of execution" of Airflow, dependencies between several tasks form a DAG. They have an unique identifier (`task_id`). Tasks can receive args explicitly or _via_ `default_args`, which are passed to `DAG` constructor ; default args can be overriden. There is 3 kinds of task :
+- task : "basic unit of execution" of Airflow, dependencies between several tasks form a DAG. They have a unique identifier (`task_id`). Tasks can receive args explicitly or _via_ `default_args`, which are passed to `DAG` constructor ; default args can be overriden. There is 3 kinds of task :
   - [Operator](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html) : template for predefined tasks (e.g. BashOperator, etc), classical approach to defining DAGs
   - [Sensor](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/sensors.html) : special type of ``operator`` designed for waiting for an event (time-based or not) or a file
   - "[TaskFlow](https://airflow.apache.org/docs/apache-airflow/stable/tutorial/taskflow.html)-decorated" one : a Python function decorated by `@task`
@@ -12,11 +19,15 @@
   - [catchup](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#catchup) : when defining a DAG, if `catchup` argument is set to `True`, the scheduler will execute a DAG for every date where there is no `logical date`.
   - [backfill](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill) : capacity to execute a DAG over a period of time (prior to `start_date`!), executed on demand *via* `airflow dags backfill -s <start_date> -e <end_date> <DAG id>`
 - `DAG` run : instantiation of a DAG
-- [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create task according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in UI.
+- [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create tasks according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in the UI.
 
 Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.x/)
 
 ## Useful command lines
+### Before invoking the UI
+It's necessary to create a user thanks to the following command
+``airflow users create --username <name> --firstname <firstname> --lastname <lastname> --role Admin|User|Op|Viewer|PUblic--email <mail> --password <pswd>``
+
 ### When writing a new DAG
 - ``python <path/to/dag>.py #should return no error`` 
 - ``airflow task test <DAG id> <task id>`` : executes <task id> from <DAG id>
@@ -25,6 +36,44 @@ Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.
 ### Miscellaneous
 - ``airflow tasks list <DAG id> [--tree]`` : prints the tasks for a given DAG (+ task' hierarchy with --tree flag)
 - ``airflow dags list`` : prints the DAGs seen in $AIRFLOW_HOME (should be ~/airflow/dags)
+
+## Scheduling
+DAGs can be parametrized (i.e. using the `schedule` argument) so that they get executed at a defined moment or when a dataset is available.
+### Definitions (see above)
+### Time-based
+To schedule time-based DAGs, Airflow provides 2 ways
+#### Cron related
+Scheduling DAGs can be done thanks to cron's syntax, including presets, here's an excerpt :
+
+| cron preset  | cron "normal" syntax |
+|--------------|----------------------|
+| "@hourly"    | "0 * * * *"          |
+| "@dayly"     | "0 0 * * *"          |
+| "@monthly"   | "0 0 1 * *"          |
+| NA | "*/5 * * * *"        |
+
+For example, a DAG can be scheduled to run every 5 minutes this way :
+``DAG(
+    <kwargs>,
+    schedule="*/5 * * * *"
+)``
+#### Timetables related
+
+### Data-based
+One can define dependencies between DAGs via datasets (see below the UI)
+![img](./captures/datasets.png)
+This way, the DAG will be executed once the dataset is available.
+To do so, the DAG must receive a dataset has argument :
+``````
+<dataset_name> = Dataset(<dataset_s_URI>) # no regex ou glob pattern allowed here
+DAG(
+    <kwargs>,
+    schedule=[<dataset_name>] # list 
+)
+``````
+[Dataset URI](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html) **must not** store sensitive data. 
+
+The UI then displays the following information regarding next runs ![img](./captures/time-based_dep.png)
  
 ## DAG configuration file's structure
 ### "Default" API (prior to Airflow 2.0)
@@ -97,3 +146,4 @@ def <DAG_s_name>():
 
 ## Additional resources
 - https://docs.astronomer.io/learn/intro-to-airflow
+- https://stackoverflow.com/questions/4583367/how-to-run-multiple-python-versions-on-windows
