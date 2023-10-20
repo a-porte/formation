@@ -5,7 +5,7 @@ from airflow.decorators import dag, task
 
 @dag(
     schedule=None, #can be set to a cron preset or a 'custom' one, e.g.: "@hourly" or "<mn> <h> <d> <M> <day>"
-    start_date=pendulum.datetime(2023, 1, 1, tz = "UTC")
+    start_date=pendulum.datetime(2023, 1, 1, tz = "UTC"),
     catchup=False # if True, then will execute DAG for every date since start_date
 )
 def my_dag():

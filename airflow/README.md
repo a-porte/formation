@@ -57,12 +57,23 @@ For example, a DAG can be scheduled to run every 5 minutes this way :
     <kwargs>,
     schedule="*/5 * * * *"
 )``
+> **Note** : Cron instructions are internally converted by Airflow to Timetables
 #### Timetables related
+[Timetables](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/timetable.html) are to be used when cron instructions are not enough or when a schedules do not use Gregorian calendar, e.g. when a DAG must be scheduled according to dawn or dusk.
+> **Note** : Built-in Timetables exist that can deal with cron expression or data intervale
+
+The main differences between `CronTriggerTimetable` and `CronIntervalTimetable` are [summarized below](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/timetable.html#differences-between-the-two-cron-timetables) :
+
+|                                                 | CronThriggerTimetable                           | CronIntervalTimetable                 |
+|-------------------------------------------------|-------------------------------------------------|---------------------------------------|
+| Interval                                        | Ignored, interval_data_start = interval_data_end | Cared                                 |
+| if `catchup` == false and `start_date` is past time | Runs the DAG *after* the current date           | Runs the DAG *before* the actual date |
+
 
 ### Data-based
 One can define dependencies between DAGs via datasets (see below the UI)
 ![img](./captures/datasets.png)
-This way, the DAG will be executed once the dataset is available.
+This way, the DAG will be executed once datasets are available.
 To do so, the DAG must receive a dataset has argument :
 ``````
 <dataset_name> = Dataset(<dataset_s_URI>) # no regex ou glob pattern allowed here
@@ -74,6 +85,12 @@ DAG(
 [Dataset URI](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html) **must not** store sensitive data. 
 
 The UI then displays the following information regarding next runs ![img](./captures/time-based_dep.png)
+
+## REST API
+Airflow provides a REST API, its documentation can be accessed at the following address:
+```<server_name>:8080/api/v1/ui```
+
+DAGs can be launched, deleted, etc, thanks to this API.
  
 ## DAG configuration file's structure
 ### "Default" API (prior to Airflow 2.0)
