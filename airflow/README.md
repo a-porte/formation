@@ -75,13 +75,38 @@ One can define dependencies between DAGs via datasets (see below the UI)
 ![img](./captures/datasets.png)
 This way, the DAG will be executed once datasets are available.
 To do so, the DAG must receive a dataset has argument :
-``````
+``````python
+# traditional API
+#producer
 <dataset_name> = Dataset(<dataset_s_URI>) # no regex ou glob pattern allowed here
+with DAG(<kwargs>) as dag:
+    <Operator>(outlets=[<dataset_name>], <other kwargs>)
+    
+#consumer
 DAG(
     <kwargs>,
-    schedule=[<dataset_name>] # list 
+    schedule=[<dataset_name>] # list of dependencies
 )
 ``````
+
+````python
+#TaskFlow API
+#producer
+<dataset_name> = Dataset(<dataset_s_URI>) # no regex ou glob pattern allowed here
+@dag(
+    <kwargs>
+)
+def prod():
+    @task(outlets=[<dataset_name>])
+    def t_prod():
+        #some transformations to produce <dataset_name>
+
+#consumer
+@dag(
+    <kwargs>,
+    schedule=[<dataset_name>] # list of dependencies 
+)
+````
 [Dataset URI](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html) **must not** store sensitive data. 
 
 The UI then displays the following information regarding next runs ![img](./captures/time-based_dep.png)
@@ -126,9 +151,11 @@ with DAG(
     <other args>
     )
 
-    # 2 ways to say that my_task_object_2 depends and  my_task_object_1
+    # 3 ways to say that my_task_object_2 depends and  my_task_object_1
     my_task_object_1.set_downstream(my_task_object_2)
     my_task_object_1 >> my_task_object_2
+    chain(my_task_object_1, my_task_object_2)
+    
 
     my_task_object_1 >> [my_task_object_2, my_task_object_n]
 
@@ -149,18 +176,26 @@ def <DAG_s_name>():
     @task(<args if need be>)
     def <my_fun>():
         #some stuff
+        return if any
     
     @task(<args if need be>)
     def <my_second_fun>(<args>):
         #some stuff again
         
-    <var> = <my_func>
+    <var> = <my_func>()
     <my_second_fun>(<var>)
 
 <DAG_s_name>()
 ````
+## Misc
+### Branching
+Airflow supports branching : a decorated task ca be use with `@task.branch`.
+But to order the task operator `>>` must be used with the 'joining' task 
+### Executing a collection of task in a sequential way
+`chain(<first_task>,* <collection>)`
 
 
 ## Additional resources
+- [Dealing with datasets](https://docs.astronomer.io/learn/airflow-datasets)
 - https://docs.astronomer.io/learn/intro-to-airflow
-- https://stackoverflow.com/questions/4583367/how-to-run-multiple-python-versions-on-windows
+- [Multiple Python versions on Windows](https://stackoverflow.com/questions/4583367/how-to-run-multiple-python-versions-on-windows)
