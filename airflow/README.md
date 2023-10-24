@@ -20,7 +20,7 @@ When ``airflow webserver`` is executed, then the UI can be accessed *via* a brow
   - [backfill](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill) : capacity to execute a DAG over a period of time (prior to `start_date`!), executed on demand *via* `airflow dags backfill -s <start_date> -e <end_date> <DAG id>`
 - `DAG` run : instantiation of a DAG
 - [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create tasks according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in the UI.
-- `macros` : Python modules that can be injected inside templates
+- `macros` : Python modules that can be injected inside templates. Airflow comes with several ones [but custom ones can be added](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html) through [plugins](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/plugins.html)
 
 Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.x/)
 
@@ -38,6 +38,7 @@ It's necessary to create a user thanks to the following command
 - ``airflow tasks list <DAG id> [--tree]`` : prints the tasks for a given DAG (+ task' hierarchy with --tree flag)
 - ``airflow dags list`` : prints the DAGs seen in $AIRFLOW_HOME (should be ~/airflow/dags)
 - ``airflow tasks render <DAG id> <task ID> <execution_date_kr_run_id>`` : prints a given task's rendering
+- ``airflow plugins`` : get information about loaded plugins, if any
 
 ## Scheduling
 DAGs can be parametrized (i.e. using the `schedule` argument) so that they get executed at a defined moment or when a dataset is available.
@@ -124,8 +125,8 @@ DAGs can be launched, deleted, etc, thanks to this API.
 ````python
 from airflow import DAG
 
-from airflow.operator.<ope> import <myOperator>
-from airflow.operator.python import PythonOperator
+from airflow.operators.<ope> import <myOperator>
+from airflow.operators.python import PythonOperator
 
 with DAG(
     <args>,
@@ -190,7 +191,9 @@ def <DAG_s_name>():
 <DAG_s_name>()
 ````
 ## Misc
-### [Templating](https://jinja.palletsprojects.com/en/3.0.x/)
+### Templating
+[Templating](https://jinja.palletsprojects.com/en/3.0.x/) is used to pass dynamic information to tasks at runtime.
+As far as I understand : may only be used with BashOperator
 ### Branching
 Airflow supports branching : a decorated task ca be use with `@task.branch`.
 But to order the task operator `>>` must be used with the 'joining' task 
