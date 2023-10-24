@@ -20,6 +20,7 @@ When ``airflow webserver`` is executed, then the UI can be accessed *via* a brow
   - [backfill](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill) : capacity to execute a DAG over a period of time (prior to `start_date`!), executed on demand *via* `airflow dags backfill -s <start_date> -e <end_date> <DAG id>`
 - `DAG` run : instantiation of a DAG
 - [Dynamic Task Mapping](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html) : way to create tasks according to input data. A reduce task is not necessary. Such tasks are represented by "<task name **[]**>" in the UI.
+- `macros` : Python modules that can be injected inside templates
 
 Note: Tasks support [Jinja templating](https://jinja.palletsprojects.com/en/3.0.x/)
 
@@ -36,6 +37,7 @@ It's necessary to create a user thanks to the following command
 ### Miscellaneous
 - ``airflow tasks list <DAG id> [--tree]`` : prints the tasks for a given DAG (+ task' hierarchy with --tree flag)
 - ``airflow dags list`` : prints the DAGs seen in $AIRFLOW_HOME (should be ~/airflow/dags)
+- ``airflow tasks render <DAG id> <task ID> <execution_date_kr_run_id>`` : prints a given task's rendering
 
 ## Scheduling
 DAGs can be parametrized (i.e. using the `schedule` argument) so that they get executed at a defined moment or when a dataset is available.
@@ -188,14 +190,16 @@ def <DAG_s_name>():
 <DAG_s_name>()
 ````
 ## Misc
+### [Templating](https://jinja.palletsprojects.com/en/3.0.x/)
 ### Branching
 Airflow supports branching : a decorated task ca be use with `@task.branch`.
 But to order the task operator `>>` must be used with the 'joining' task 
-### Executing a collection of task in a sequential way
+### Executing a collection of tasks in a sequential way
 `chain(<first_task>,* <collection>)`
 
 
 ## Additional resources
-- [Dealing with datasets](https://docs.astronomer.io/learn/airflow-datasets)
+- [Dealing with datasets](https://docs.astronomer.io/learn/airflow-datasets) 
+- https://docs.astronomer.io/learn/templating
 - https://docs.astronomer.io/learn/intro-to-airflow
 - [Multiple Python versions on Windows](https://stackoverflow.com/questions/4583367/how-to-run-multiple-python-versions-on-windows)
