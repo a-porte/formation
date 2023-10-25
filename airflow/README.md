@@ -193,7 +193,9 @@ def <DAG_s_name>():
 ## Misc
 ### Templating
 [Templating](https://jinja.palletsprojects.com/en/3.0.x/) is used to pass dynamic information to tasks at runtime.
-As far as I understand : may only be used with BashOperator
+Templates can be used :
+- on the fields `bash_command` and `env` from `BashOperator`  
+- `@task`,`@task.virtualenv`,`@task.external_python` decorated functions (respectively corresponding to `PythonOperator`, `PythonVirtualenvOperator` and `ExternalPythonOperator`) support through `templates_dict` argument
 ### Branching
 Airflow supports branching : a decorated task ca be use with `@task.branch`.
 But to order the task operator `>>` must be used with the 'joining' task 
