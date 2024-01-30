@@ -1,0 +1,5 @@
+2 3
+1 2 N
+ADADAA
+1 1 N
+AGA
