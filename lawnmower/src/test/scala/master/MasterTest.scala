@@ -41,6 +41,25 @@ class MasterTest extends AnyFunSpec {
         assert(!master.isTileMowable(mowers.head.position))
       }
     }
+    describe("an mower"){
+      describe("that can me moved") {
+        it("should move it") {
+          assert(false)
+
+        }
+      }
+      describe("that can't be moved") {
+        it("should not move it") {
+          assert(false)
+
+        }
+      }
+    }
+    describe("several mowers") {
+      it("should only move them sequentially") {
+        assert(false)
+      }
+    }
   }
 
 }
