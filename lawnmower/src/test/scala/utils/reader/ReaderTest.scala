@@ -1,9 +1,10 @@
-package reader
+package utils.reader
 
 import org.scalatest.funspec.AnyFunSpec
 import lawn.Lawn
 import moving.{Move, Orientation, Position}
 import mower.Mower
+import reader.Reader
 
 import scala.util.Try
 
