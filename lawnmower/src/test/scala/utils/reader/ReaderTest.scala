@@ -18,11 +18,11 @@ class ReaderTest extends AnyFunSpec:
     Mower(Position(1, 2), north, moves.head)
       :: Mower(Position(1, 1), north, moves.tail.head) :: Nil
 
-  val lawn = Lawn(2, 3, mowers)
+  val lawn = Lawn(2, 3)
 
   describe("When the file is read") {
-    it("should return a lawn") {
-      assert(Reader.readFromResources(fileName).contains(lawn)) // instead of Reader. ... == Some(lawn) !!
+    it("should return a lawn and mowers") {
+      assert(Reader.readFromResources(fileName).contains((lawn, mowers)) )// instead of Reader. ... == Some(lawn) !!
     }
 
   }
