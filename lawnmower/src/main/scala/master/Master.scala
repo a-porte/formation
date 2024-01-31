@@ -5,6 +5,7 @@ import moving.Position
 import mower.Mower
 
 case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
+
   def isTileEmpty(pos: Position): Boolean =
     mowers.count(_.position == pos) >= 0
 
@@ -16,6 +17,9 @@ case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
 
   def isTileMowable(pos: Position): Boolean =
     isTileEmpty(pos) && mowers.count(_.position == pos) == 0
+
+  def play: Master =
+    ???//this.copy(mowers = mowers.map(_.moves))
 
 
 
