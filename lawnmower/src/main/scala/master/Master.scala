@@ -4,6 +4,7 @@ import lawn.Lawn
 import moving.{Move, Orientation, Position}
 import mower.Mower
 
+import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
 
 case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
@@ -47,7 +48,19 @@ case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
 
 
   def play: Master =
+    @tailrec
+    def iter(m: Master): Master =
+      if m.mowers.exists(_.moves.nonEmpty) then
+        iter(m.nextMasterState)
+      else
+        m
+    iter(this)
+
+  private def nextMasterState =
     this.copy(mowers = mowers.map(nextMowerState))
+
+
+  override def toString: String = mowers.mkString("\n")
     
 
 

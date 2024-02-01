@@ -17,8 +17,8 @@ object Reader :
           val widthAndHeight = value.head.split(" ").toSeq
           Some(
             LawnBuilder.buildFrom(
-              widthAndHeight.head.toInt,
-              widthAndHeight.reverse.head.toInt
+              widthAndHeight.head.toInt +1,
+              widthAndHeight.reverse.head.toInt +1
             ), 
             MowersBuilder.buildMowers(value.tail)
           )
