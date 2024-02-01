@@ -18,7 +18,7 @@ case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
     && pos.y < lawn.height
 
   def isTileMowable(pos: Position): Boolean =
-    isTileEmpty(pos) && mowers.count(_.position == pos) == 0
+    isTileEmpty(pos) && mowers.count(_.position == pos) == 0 && isTileInLegalSpace(pos)
 
   private val clockwise = HashMap[Orientation, Orientation](
      Orientation.NORTH -> Orientation.EAST,
@@ -35,7 +35,7 @@ case class Master/* of puppets*/ (val lawn: Lawn, val mowers: Seq[Mower]):
       theoreticalPos
     else
       initialPos
-  def nextMowerState(toMove:Mower): Mower =
+  private def nextMowerState(toMove:Mower): Mower =
     toMove.popMove match
       case None => toMove
       case Some(move) =>
