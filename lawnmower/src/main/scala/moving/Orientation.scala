@@ -1,7 +1,10 @@
 package moving
 
-enum Orientation:
-  case NORTH, EAST, SOUTH, WEST
+enum Orientation(val leftOrright:Int, val upOrDown:Int):
+  case NORTH extends Orientation(0, 1)
+  case EAST extends Orientation(1, 0)
+  case  SOUTH extends Orientation(0, -1)
+  case  WEST extends Orientation(-1, 0)
 
 
 object Orientation:
