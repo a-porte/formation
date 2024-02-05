@@ -18,7 +18,7 @@ object Reader :
       case Success(value) => value.split("\n", 2).foldLeft[(Option[Lawn], Seq[Mower])](None, Nil){
         case ((None, _), lawnFurthestTile) => // 1st element should be the upper right tile
           lawnFurthestTile match
-            case lawnPattern(w, h) =>(Some(LawnBuilder.buildFrom(w.toInt +1, h.toInt +1)), Nil)
+            case lawnPattern(w, h) =>(LawnBuilder.buildFrom(w, h, _+1), Nil)
             case _ => (None, Nil)
 
         case ((Some(lawn), mowers), element) =>
@@ -29,10 +29,6 @@ object Reader :
              case List(_, _*) => ???//TODO
              case Nil => ???//TODO
         }
-
-    for lawn <- optLawn
-      yield Some(lawn,optSeq)
-
 
     optLawn match
       case Some(value) => Some(value, optSeq)
