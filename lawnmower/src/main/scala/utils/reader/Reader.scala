@@ -7,29 +7,34 @@ import scala.util.{Failure, Success, Try, Using}
 
 object Reader :
   def readFromResources(fileName: String): Option[(Lawn, Seq[Mower])] =
+    val lawnPattern = """(\d)\s+(\d)""".r
     val charToDrop = (x:Char) => x == '\r'
-    val lines = Using(Source.fromResource(fileName)){_.mkString.filterNot(charToDrop).split("\n")}
+    val mownerPattern = """(\d)\s(\d)\s(\w)\n(\w+).*""".r
 
-    lines match
-      case Failure(exception) => throw Error(exception)
-      case Success(value) =>
-        if value.nonEmpty then
-          val widthAndHeight = value.head.split(" ").toSeq
-          Some(
-            LawnBuilder.buildFrom(
-              widthAndHeight.head.toInt +1,
-              widthAndHeight.reverse.head.toInt +1
-            ), 
-            MowersBuilder.buildMowers(value.tail)
-          )
-        else
-          None  
+    val l = Using(Source.fromResource(fileName)){_.mkString.filterNot(charToDrop) }
+
+    val (optLawn, optSeq) = l match
+      case Failure(exception) => ??? //TODO
+      case Success(value) => value.split("\n", 2).foldLeft[(Option[Lawn], Seq[Mower])](None, Nil){
+        case ((None, _), lawnFurthestTile) => // 1st element should be the upper right tile
+          lawnFurthestTile match
+            case lawnPattern(w, h) =>(Some(LawnBuilder.buildFrom(w.toInt +1, h.toInt +1)), Nil)
+            case _ => (None, Nil)
+
+        case ((Some(lawn), mowers), element) =>
+         element match
+           //case mownerPattern(x, y, _*) => (Some(lawn), MowersBuilder.buildMowers(Seq(...)))  // mownerPattern does not allow this kind of construct
+           case _ => element.split("\n"/*,3*//*dealing with limit requires to changes buildMowers signature*/).toList match
+             case posAndOr :: moves :: tail =>  (Some(lawn), MowersBuilder.buildMowers(Seq(posAndOr, moves) ++ tail))
+             case List(_, _*) => ???//TODO
+             case Nil => ???//TODO
+        }
+
+    for lawn <- optLawn
+      yield Some(lawn,optSeq)
 
 
-
-
-
-
-
-
+    optLawn match
+      case Some(value) => Some(value, optSeq)
+      case None => None
 
