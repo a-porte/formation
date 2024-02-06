@@ -23,7 +23,7 @@ object Reader :
 
         case ((Some(lawn), mowers), element) =>
          element match
-           //case mownerPattern(x, y, _*) => (Some(lawn), MowersBuilder.buildMowers(Seq(...)))  // mownerPattern does not allow this kind of construct
+           //case mownerPattern(x, y, _*) => (None, Nil)//(Some(lawn), MowersBuilder.buildMowers(Seq(...)))  // mownerPattern does not allow this kind of construct
            case _ => element.split("\n"/*,3*//*dealing with limit requires to changes buildMowers signature*/).toList match
              case posAndOr :: moves :: tail =>  (Some(lawn), MowersBuilder.buildMowers(Seq(posAndOr, moves) ++ tail))
              case List(_, _*) => ???//TODO
